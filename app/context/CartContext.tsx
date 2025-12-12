@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { client } from "../lib/shopify";
 import { addToCartEvent } from "../lib/analytics";
+import { useAuth } from "./AuthContext";
 
 interface CartContextType {
     cart: any;
@@ -17,28 +18,43 @@ const CartContext = createContext<CartContextType>({} as CartContextType);
 export function CartProvider({ children }: { children: React.ReactNode }) {
     const [cart, setCart] = useState<any>(null);
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const { customer } = useAuth();
 
     useEffect(() => {
         async function initializeCart() {
             const checkoutId = localStorage.getItem("shopify_checkout_id");
+            let currentCart;
+
             if (checkoutId) {
                 const existingCart = await client.checkout.fetch(checkoutId);
                 if (existingCart?.completedAt) {
-                    createNewCart();
+                    currentCart = await createNewCart();
                 } else {
+                    currentCart = existingCart;
                     setCart(existingCart);
                 }
             } else {
-                createNewCart();
+                currentCart = await createNewCart();
+            }
+
+            // --- CRITICAL FIX: ASSOCIATE CUSTOMER TO CHECKOUT ---
+            // Only associate if we have a token and the cart isn't already associated
+            const token = localStorage.getItem("shopify_customer_token");
+            if (token && currentCart && !(currentCart as any).customer) {
+                // Using 'any' cast for client because associateCustomer might be missing in the strict type definition of the SDK wrapper
+                // but it is a valid Storefront API mutation. 
+                const updatedCart = await (client.checkout as any).associateCustomer(currentCart.id, token);
+                setCart(updatedCart);
             }
         }
         initializeCart();
-    }, []);
+    }, [customer]);
 
     async function createNewCart() {
         const newCart = await client.checkout.create();
         localStorage.setItem("shopify_checkout_id", newCart.id as string);
         setCart(newCart);
+        return newCart;
     }
 
 

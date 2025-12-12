@@ -151,7 +151,7 @@ function AddressForm({ address, accessToken, onSave }: any) {
 
 // Main Profile Drawer Component
 export default function ProfileDrawer() {
-    const { isProfileOpen, toggleProfile, customer, login, register, logout } = useAuth();
+    const { isProfileOpen, toggleProfile, customer, login, register, logout, refreshCustomer } = useAuth();
     const [mode, setMode] = useState<"login" | "register">("login");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -188,15 +188,16 @@ export default function ProfileDrawer() {
         }
     };
 
-    const handleAddressSave = (updatedData: any) => {
+    const handleAddressSave = async (updatedData: any) => {
         // If successful, reset back to view mode and show success message
         if (updatedData.id) {
             setShowAddressEdit(false);
             setAddressSuccess(true);
             setTimeout(() => setAddressSuccess(false), 3000);
-            // Important: AuthContext must be updated if customer data changed
-            // Since the AuthContext's login/register calls getCustomer(), we can skip a direct update here, 
-            // but for address update, the save function must trigger the AuthContext refresh.
+
+            // --- CRITICAL FIX: REFRESH GLOBAL STATE ---
+            await refreshCustomer();
+            // ------------------------------------------
         }
         toggleProfile(); // Close on success for now
     }

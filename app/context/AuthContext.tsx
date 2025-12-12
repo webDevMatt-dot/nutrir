@@ -10,6 +10,7 @@ interface AuthContextType {
     logout: () => void;
     isProfileOpen: boolean;
     toggleProfile: () => void;
+    refreshCustomer: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -17,6 +18,14 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [customer, setCustomer] = useState<any>(null);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+    async function refreshCustomer() {
+        const token = localStorage.getItem("shopify_customer_token");
+        if (token) {
+            const data = await getCustomer(token);
+            if (data) setCustomer(data);
+        }
+    }
 
     // Check for saved token on load
     useEffect(() => {
@@ -35,8 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (res?.customerAccessToken?.accessToken) {
             const token = res.customerAccessToken.accessToken;
             localStorage.setItem("shopify_customer_token", token);
-            const user = await getCustomer(token);
-            setCustomer(user);
+            await refreshCustomer();
             return null; // Success
         }
         return res?.userErrors?.[0]?.message || "Login failed";
@@ -45,7 +53,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function register(email: string, pass: string) {
         const res = await createCustomer(email, pass, "New User");
         if (res?.customer?.id) {
-            return await login(email, pass); // Auto-login after signup
+            const err = await login(email, pass);
+            if (!err) await refreshCustomer();
+            return err;
         }
         return res?.userErrors?.[0]?.message || "Signup failed (Server Validation)";
     }
@@ -56,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ customer, login, register, logout, isProfileOpen, toggleProfile: () => setIsProfileOpen(!isProfileOpen) }}>
+        <AuthContext.Provider value={{ customer, login, register, logout, isProfileOpen, toggleProfile: () => setIsProfileOpen(!isProfileOpen), refreshCustomer }}>
             {children}
         </AuthContext.Provider>
     );
