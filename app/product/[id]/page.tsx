@@ -1,38 +1,51 @@
+// app/product/[id]/page.tsx - FINAL VERSION
+
 import Link from "next/link";
-import { client } from "../../lib/shopify"; // Changed from ../../../
-import Accordion from "../../components/Accordion"; // Changed from ../../../
-import ProductActions from "../../components/ProductActions"; // Changed from ../../../
-import ViewItemTracker from "../../components/ViewItemTracker";
+import { getProduct } from "../../lib/shopify"; // <-- Using robust utility
+import Accordion from "../../components/Accordion";
+import ProductActions from "../../components/ProductActions";
+import ViewItemTracker from "../../components/ViewItemTracker"; // <-- Component to handle GA4
 
 type Props = {
     params: Promise<{ id: string }>;
 };
 
-async function getProduct(id: string) {
+// Use the robust getProduct from lib/shopify.ts which handles ID decoding and fetching
+async function fetchProductData(id: string) {
     const decodedId = decodeURIComponent(id);
-    const product = await client.product.fetch(decodedId);
-    return JSON.parse(JSON.stringify(product));
+    const product = await getProduct(decodedId);
+    return product;
 }
 
-export default async function ProductPage({ params }: Props) {
+export default async function ProductDetailPage({ params }: Props) {
     const { id } = await params;
-    const product = await getProduct(id);
+    const product = await fetchProductData(id);
+
+    if (!product) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <p>Product not found.</p>
+            </div>
+        );
+    }
 
     // Data needed for the design
     const category = product.tags?.[0] || "Wellness";
     const price = product.variants[0]?.price;
     const subtitle = product.productType || "Premium Natural Supplement";
 
-    // Pastel color based on category
+    // Pastel color based on category - Using hardcoded logic for now, but should use the ProductCard logic. Let's keep existing logic to avoid massive file diffs.
     const bgColor = category.toLowerCase().includes("female") ? "bg-[#F2EFF9]" : "bg-[#E8F4F1]";
     const badgeTextColor = category.toLowerCase().includes("female") ? "text-pink-600" : "text-[#1A2621]";
     const badgeBgColor = category.toLowerCase().includes("female") ? "bg-pink-50" : "bg-[#E8F4F1]";
 
+
     return (
         <div className="min-h-screen bg-white pt-8 pb-20">
+            {/* --- TRACKER COMPONENT --- */}
             <ViewItemTracker product={product} />
+            {/* ------------------------- */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
                 {/* 1. BACK LINK */}
                 <Link href="/" className="inline-flex items-center text-sm text-gray-500 hover:text-black mb-8 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
