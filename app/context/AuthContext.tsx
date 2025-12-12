@@ -43,11 +43,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     async function register(email: string, pass: string) {
-        const res = await createCustomer(email, pass);
+        const res = await createCustomer(email, pass, "New User");
         if (res?.customer?.id) {
             return await login(email, pass); // Auto-login after signup
         }
-        return res?.userErrors?.[0]?.message || "Signup failed";
+        return res?.userErrors?.[0]?.message || "Signup failed (Server Validation)";
     }
 
     function logout() {

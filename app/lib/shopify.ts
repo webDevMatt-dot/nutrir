@@ -143,7 +143,7 @@ export async function searchProducts(searchTerm: string) {
 
 // --- AUTHENTICATION ---
 
-export async function createCustomer(email: string, password: string) {
+export async function createCustomer(email: string, password: string, firstName: string = "Guest") {
     const query = `
     mutation customerCreate($input: CustomerCreateInput!) {
       customerCreate(input: $input) {
@@ -152,7 +152,7 @@ export async function createCustomer(email: string, password: string) {
       }
     }
   `;
-    const { data } = await shopifyFetch(query, { input: { email, password } });
+    const { data } = await shopifyFetch(query, { input: { email, password, firstName } });
     return data?.customerCreate;
 }
 
