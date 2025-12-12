@@ -177,6 +177,18 @@ export async function getCustomer(accessToken: string) {
         firstName
         lastName
         email
+        defaultAddress {
+          id
+          firstName
+          lastName
+          address1
+          address2
+          city
+          province
+          zip
+          country
+          phone
+        }
         orders(first: 5) {
           edges {
             node {
@@ -193,4 +205,63 @@ export async function getCustomer(accessToken: string) {
   `;
     const { data } = await shopifyFetch(query, { customerAccessToken: accessToken });
     return data?.customer;
+}
+
+// --- ADDRESS MANAGEMENT ---
+
+export async function updateCustomerAddress(accessToken: string, addressId: string, address: any) {
+    const query = `
+    mutation customerAddressUpdate($customerAccessToken: String!, $id: ID!, $address: MailingAddressInput!) {
+      customerAddressUpdate(customerAccessToken: $customerAccessToken, id: $id, address: $address) {
+        customerAddress {
+          id
+          firstName
+          lastName
+          address1
+          city
+          province
+          zip
+          country
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+    const { data } = await shopifyFetch(query, {
+        customerAccessToken: accessToken,
+        id: addressId,
+        address: address
+    });
+    return data?.customerAddressUpdate;
+}
+
+export async function createCustomerAddress(accessToken: string, address: any) {
+    const query = `
+    mutation customerAddressCreate($customerAccessToken: String!, $address: MailingAddressInput!) {
+      customerAddressCreate(customerAccessToken: $customerAccessToken, address: $address) {
+        customerAddress {
+          id
+          firstName
+          lastName
+          address1
+          city
+          province
+          zip
+          country
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+    const { data } = await shopifyFetch(query, {
+        customerAccessToken: accessToken,
+        address: address
+    });
+    return data?.customerAddressCreate;
 }
