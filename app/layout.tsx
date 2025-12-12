@@ -17,13 +17,30 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://nutrir.netlify.app'),
   title: {
     template: '%s | Nutrir',
-    default: 'Nutrir | Science-Aligned Natural Health', // The home page title
+    default: 'Nutrir | Science-Aligned Natural Health',
   },
   description: 'Premium supplements bridging the gap between effective clinical research and natural wellness.',
+  openGraph: {
+    title: 'Nutrir | Science-Aligned Natural Health',
+    description: 'Premium supplements bridging the gap between effective clinical research and natural wellness.',
+    url: 'https://nutrir.netlify.app',
+    siteName: 'Nutrir',
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Nutrir Logo Card',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
   icons: {
-    icon: '/icon', // Points to the file we just created
+    icon: '/icon',
   },
 };
 
