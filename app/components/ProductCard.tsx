@@ -1,3 +1,4 @@
+// app/components/ProductCard.tsx
 "use client";
 
 import Link from "next/link";
@@ -97,6 +98,7 @@ export default function ProductCard({ product, index }: Props) {
                 <button
                     onClick={(e) => {
                         e.preventDefault();
+                        e.stopPropagation(); // FIX: Stop the click from registering on the parent Link
                         addToCart(variantId);
                     }}
                     className="absolute bottom-6 right-6 w-12 h-12 bg-[#1A2621] rounded-full flex items-center justify-center text-white opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg hover:bg-[#D4AF37] hover:text-black z-30"
