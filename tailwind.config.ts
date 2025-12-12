@@ -1,13 +1,13 @@
 import type { Config } from "tailwindcss";
 
-const config: Config = {
+const config = { // <-- Removed "type: Config" here
     content: [
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
 
-    // --- CORRECT LOCATION FOR SAFELIST ---
+    // SAFELIST IS CORRECTLY PLACED AT THE TOP LEVEL
     safelist: [
         'bg-[#F2EFF9]',
         'bg-[#DDEBFF]',
@@ -16,7 +16,6 @@ const config: Config = {
         'bg-[#F9F9F7]',
         'bg-gray-50',
     ],
-    // ------------------------------------
 
     theme: {
         extend: {
@@ -38,4 +37,6 @@ const config: Config = {
     },
     plugins: [],
 };
-export default config;
+
+// --- THE CRITICAL FIX: Assert the type on export ---
+export default config as Config;
