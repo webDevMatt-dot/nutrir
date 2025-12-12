@@ -6,16 +6,30 @@ const config: Config = {
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
+
+    // --- CORRECT LOCATION FOR SAFELIST ---
     safelist: [
-        'bg-[#F2EFF9]', // Female Wellness, Specific Conditions (Purple/Pink)
-        'bg-[#DDEBFF]', // <--- ADDED: New Blue for Male Wellness
-        'bg-[#E8F4F1]', // Male Wellness, Joint & Bone (Blue/Green)
-        'bg-[#FEF2EA]', // Gut Health (Peach/Brown)
-        'bg-[#F9F9F7]', // Skin & Beauty (Olive/Beige)
-        'bg-gray-50',   // Default
+        'bg-[#F2EFF9]',
+        'bg-[#DDEBFF]',
+        'bg-[#E8F4F1]',
+        'bg-[#FEF2EA]',
+        'bg-[#F9F9F7]',
+        'bg-gray-50',
     ],
+    // ------------------------------------
+
     theme: {
         extend: {
+            animation: {
+                marquee: 'marquee 25s linear infinite',
+            },
+            keyframes: {
+                marquee: {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-50%)' },
+                },
+            },
+
             colors: {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
