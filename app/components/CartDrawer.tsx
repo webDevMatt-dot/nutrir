@@ -1,3 +1,4 @@
+// app/components/CartDrawer.tsx
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -7,7 +8,8 @@ import { useCart } from "../context/CartContext";
 import { beginCheckoutEvent } from "../lib/analytics";
 
 export default function CartDrawer() {
-    const { cart, isCartOpen, toggleCart, removeLineItem } = useCart();
+    // --- UPDATED: Destructuring updateLineItemQuantity ---
+    const { cart, isCartOpen, toggleCart, removeLineItem, updateLineItemQuantity } = useCart();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -19,6 +21,15 @@ export default function CartDrawer() {
             document.body.style.overflow = isCartOpen ? "hidden" : "unset";
         }
     }, [isCartOpen, mounted]);
+
+    // Helper to format currency
+    const formatCurrency = (amount: string, code: string) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: code || 'ZAR',
+            minimumFractionDigits: 2
+        }).format(parseFloat(amount));
+    };
 
     if (!mounted || !isCartOpen) return null;
 
@@ -47,9 +58,9 @@ export default function CartDrawer() {
                         <p className="text-center text-gray-500 mt-10">Your cart is empty.</p>
                     ) : (
                         cart.lineItems.map((item: any) => (
-                            <div key={item.id} className="flex gap-4 items-center">
+                            <div key={item.id} className="flex gap-4">
                                 {/* Image */}
-                                <div className="w-20 h-20 bg-gray-100 rounded-md overflow-hidden border">
+                                <div className="w-20 h-20 bg-gray-100 rounded-md overflow-hidden border flex-shrink-0">
                                     {item.variant.image && (
                                         <img
                                             src={item.variant.image.src}
@@ -60,18 +71,36 @@ export default function CartDrawer() {
                                 </div>
 
                                 {/* Details */}
-                                <div className="flex-1">
-                                    <h3 className="font-medium text-sm text-gray-900">{item.title}</h3>
-                                    <p className="text-gray-500 text-sm">
-                                        ${item.variant.price.amount} {item.variant.price.currencyCode}
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-medium text-sm text-gray-900 line-clamp-2">{item.title}</h3>
+                                    <p className="text-sm font-medium text-[#1A2621] mt-1">
+                                        {formatCurrency(item.variant.price.amount, item.variant.price.currencyCode)}
                                     </p>
-                                    <p className="text-xs text-gray-400">Qty: {item.quantity}</p>
+
+                                    {/* --- NEW: QUANTITY SELECTOR --- */}
+                                    <div className="flex items-center border border-gray-200 rounded-full px-2 py-1 mt-3 w-fit">
+                                        <button
+                                            onClick={() => updateLineItemQuantity(item.id, item.quantity - 1)}
+                                            className="text-gray-600 hover:bg-gray-100 rounded-full w-5 h-5 flex items-center justify-center font-bold text-sm transition"
+                                            disabled={item.quantity <= 1}
+                                        >
+                                            −
+                                        </button>
+                                        <span className="w-6 text-center text-sm font-medium text-[#1A2621]">{item.quantity}</span>
+                                        <button
+                                            onClick={() => updateLineItemQuantity(item.id, item.quantity + 1)}
+                                            className="text-gray-600 hover:bg-gray-100 rounded-full w-5 h-5 flex items-center justify-center font-bold text-sm transition"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                    {/* ----------------------------- */}
                                 </div>
 
                                 {/* Remove Button */}
                                 <button
                                     onClick={() => removeLineItem(item.id)}
-                                    className="text-xs text-red-500 hover:text-red-700 underline"
+                                    className="text-xs text-red-500 hover:text-red-700 underline flex-shrink-0 self-start mt-1"
                                 >
                                     Remove
                                 </button>
@@ -83,13 +112,9 @@ export default function CartDrawer() {
                 {/* Footer / Checkout */}
                 <div className="border-t pt-6 mt-4">
                     <div className="flex justify-between text-lg font-bold mb-4 text-gray-900">
-                        <span>Total</span>
-                        <span>${cart?.totalPrice?.amount || "0.00"}</span>
+                        <span>Subtotal</span>
+                        <span>{formatCurrency(cart?.totalPrice?.amount || "0.00", cart?.totalPrice?.currencyCode)}</span>
                     </div>
-
-
-
-                    // ... inside CartDrawer ...
 
                     {/* Checkout Button */}
                     {cart?.webUrl ? (

@@ -1,3 +1,4 @@
+// app/context/CartContext.tsx
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
@@ -8,9 +9,11 @@ import { useAuth } from "./AuthContext";
 interface CartContextType {
     cart: any;
     isCartOpen: boolean;
-    addToCart: (variantId: string, quantity?: number) => Promise<void>; // Updated type
+    addToCart: (variantId: string, quantity?: number) => Promise<void>;
     toggleCart: () => void;
     removeLineItem: (lineItemId: string) => Promise<void>;
+    // --- NEW: Function to update an item's quantity ---
+    updateLineItemQuantity: (lineItemId: string, quantity: number) => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType>({} as CartContextType);
@@ -58,8 +61,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
 
 
-    // ... inside CartProvider ...
-
     // UPDATED FUNCTION: Now accepts 'qty' (defaults to 1 if missing)
     async function addToCart(variantId: string, qty: number = 1) {
         if (!cart) return;
@@ -71,10 +72,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setCart(updatedCart);
 
         // --- TRIGGER GA4 EVENT ---
-        // We need to find the product details from the updated cart or fetch them. 
-        // For simplicity and performance, we'll try to find it in the cart or use a basic payload.
-        // Ideally, pass the full product object to addToCart, but changing signature might break usage.
-        // Let's inspect the updatedCart to find the new item.
         const addedItem = updatedCart.lineItems?.find((item: any) => item.variant.id === variantId);
 
         if (addedItem) {
@@ -93,12 +90,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setCart(updatedCart);
     }
 
+    // --- NEW: Update Line Item Quantity ---
+    async function updateLineItemQuantity(lineItemId: string, quantity: number) {
+        if (!cart || quantity <= 0) {
+            // If quantity is 0 or less, we treat it as a remove action
+            if (quantity <= 0) await removeLineItem(lineItemId);
+            return;
+        }
+
+        const lineItemsToUpdate = [{ id: lineItemId, quantity }];
+        const updatedCart = await client.checkout.updateLineItems(cart.id, lineItemsToUpdate);
+        setCart(updatedCart);
+    }
+
     function toggleCart() {
         setIsCartOpen(!isCartOpen);
     }
 
     return (
-        <CartContext.Provider value={{ cart, isCartOpen, addToCart, toggleCart, removeLineItem }}>
+        <CartContext.Provider value={{ cart, isCartOpen, addToCart, toggleCart, removeLineItem, updateLineItemQuantity }}>
             {children}
         </CartContext.Provider>
     );
