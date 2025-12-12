@@ -9,22 +9,19 @@ const ShippingIcon = (
         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V10.375m1.5 7.5V10.5M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 3.75h-3m-15 0H3.375a1.125 1.125 0 01-1.125-1.125V10.375m1.5 7.5V10.5" />
     </svg>
 );
-
 const RefundIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75l-2.433 2.433a1.875 1.875 0 01-2.651 0l-2.433-2.433" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75l-2.433 2.433a1.875 1.875 0 01-2.651 0l-2.433-2.433m10.5-5.25l-2.433-2.433a1.875 1.875 0 00-2.651 0L8.25 10.5m4.5-5.25v12.75" />
     </svg>
 );
-
 const PrivacyIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
     </svg>
 );
-
 const TermsIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625c0-1.036-.84-1.875-1.875-1.875h-3.375" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625c0-1.036-.84-1.875-1.875-1.875h-3.375m-1.5 0h-1.5m-3.375 0h-3.375M5.25 10.5h13.5M9 7.5h6M4.5 19.5h15M7.5 4.5h9" />
     </svg>
 );
 
