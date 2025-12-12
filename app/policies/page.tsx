@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import Policies from "./Policies";
+import Policies from "./policies";
 
 export default function PoliciesPage() {
     return (
