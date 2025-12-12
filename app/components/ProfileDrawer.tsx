@@ -109,17 +109,17 @@ export default function ProfileDrawer() {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-[#F9F9F7] p-4 rounded-xl outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                                    className="w-full bg-[#F9F9F7] p-4 rounded-xl outline-none focus:ring-1 focus:ring-[#D4AF37] text-[#1A2621]"
                                 />
                             </div>
                             <div>
                                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Password</label>
                                 <input
                                     type="password"
-                                    required
+                                    // required 
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full bg-[#F9F9F7] p-4 rounded-xl outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                                    className="w-full bg-[#F9F9F7] p-4 rounded-xl outline-none focus:ring-1 focus:ring-[#D4AF37] text-[#1A2621]"
                                 />
                             </div>
 
