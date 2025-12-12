@@ -12,15 +12,16 @@ type Props = {
 };
 
 // Use the robust getProduct from lib/shopify.ts which handles ID decoding and fetching
-async function fetchProductData(id: string) {
-    const decodedId = decodeURIComponent(id);
-    const product = await getProduct(decodedId);
+async function fetchProductData(handle: string) {
+    // The decodedId logic is for the Global ID, which we are removing.
+    // We now pass the handle directly to getProduct.
+    const product = await getProduct(handle);
     return product;
 }
 
 export default async function ProductDetailPage({ params }: Props) {
-    const { id } = await params;
-    const product = await fetchProductData(id);
+    const { id: handle } = await params; // Destructure and rename id to handle
+    const product = await fetchProductData(handle);
 
     if (!product) {
         return (

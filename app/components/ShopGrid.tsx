@@ -52,8 +52,8 @@ export default function ShopGrid({ products }: Props) {
                             key={cat}
                             onClick={() => setActiveCategory(cat)}
                             className={`text-sm font-bold transition-all duration-200 px-6 py-2.5 rounded-full border ${activeCategory === cat
-                                    ? "bg-[#1A2621] text-white border-[#1A2621] shadow-md transform scale-105" // Active
-                                    : "bg-white text-gray-500 border-gray-100 hover:border-[#1A2621] hover:text-[#1A2621]" // Inactive
+                                ? "bg-[#1A2621] text-white border-[#1A2621] shadow-md transform scale-105" // Active
+                                : "bg-white text-gray-500 border-gray-100 hover:border-[#1A2621] hover:text-[#1A2621]" // Inactive
                                 }`}
                         >
                             {cat}

@@ -73,7 +73,7 @@ export default function ProductCard({ product, index }: Props) {
 
     return (
         <Link
-            href={`/product/${encodeURIComponent(product.id)}`}
+            href={`/product/${product.handle}`}
             className="group block"
         >
             {/* CARD IMAGE & COLOR */}
