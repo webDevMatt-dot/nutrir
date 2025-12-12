@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Marquee from "./components/Marquee";
 import { client } from "./lib/shopify";
 import Hero from "./components/Hero";
