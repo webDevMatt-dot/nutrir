@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useCart } from "../context/CartContext";
+import { beginCheckoutEvent } from "../lib/analytics";
 
 export default function CartDrawer() {
     const { cart, isCartOpen, toggleCart, removeLineItem } = useCart();
@@ -86,14 +87,22 @@ export default function CartDrawer() {
                         <span>${cart?.totalPrice?.amount || "0.00"}</span>
                     </div>
 
+
+
+                    // ... inside CartDrawer ...
+
                     {/* Checkout Button */}
                     {cart?.webUrl ? (
-                        <a
+                        <Link
                             href={cart.webUrl}
+                            onClick={() => {
+                                beginCheckoutEvent(cart);
+                                toggleCart();
+                            }}
                             className="block w-full bg-black text-white text-center py-4 rounded-lg hover:bg-gray-800 transition font-medium"
                         >
                             Proceed to Checkout
-                        </a>
+                        </Link>
                     ) : (
                         <button disabled className="block w-full bg-gray-300 text-white text-center py-4 rounded-lg cursor-not-allowed">
                             Proceed to Checkout

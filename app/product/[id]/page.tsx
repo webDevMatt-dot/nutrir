@@ -2,6 +2,7 @@ import Link from "next/link";
 import { client } from "../../lib/shopify"; // Changed from ../../../
 import Accordion from "../../components/Accordion"; // Changed from ../../../
 import ProductActions from "../../components/ProductActions"; // Changed from ../../../
+import ViewItemTracker from "../../components/ViewItemTracker";
 
 type Props = {
     params: Promise<{ id: string }>;
@@ -29,6 +30,7 @@ export default async function ProductPage({ params }: Props) {
 
     return (
         <div className="min-h-screen bg-white pt-8 pb-20">
+            <ViewItemTracker product={product} />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* 1. BACK LINK */}
