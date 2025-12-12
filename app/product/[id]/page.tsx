@@ -5,6 +5,7 @@ import { getProduct } from "../../lib/shopify"; // <-- Using robust utility
 import Accordion from "../../components/Accordion";
 import ProductActions from "../../components/ProductActions";
 import ViewItemTracker from "../../components/ViewItemTracker"; // <-- Component to handle GA4
+import ProductReviews from "../../components/ProductReviews"; // <--- NEW IMPORT
 
 type Props = {
     params: Promise<{ id: string }>;
@@ -131,6 +132,12 @@ export default async function ProductDetailPage({ params }: Props) {
                     </div>
                 </div>
             </div>
+
+            {/* --- REVIEWS SECTION --- */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <ProductReviews productHandle={product.handle} />
+            </div>
+            {/* ----------------------- */}
         </div>
     );
 }
