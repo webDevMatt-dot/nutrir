@@ -11,47 +11,6 @@ type Props = {
     params: Promise<{ id: string }>;
 };
 
-// =========================================================================
-// NEW UTILITY FUNCTION TO PARSE STRUCTURED CONTENT FROM product.descriptionHtml
-// =========================================================================
-function parseProductContent(htmlContent: string) {
-    if (!htmlContent) {
-        return {
-            whatItDoes: "<p>Supports general wellness and vitality.</p>",
-            keyBenefits: "<p>Key Benefits content coming soon.</p>",
-            howToUse: "<p>How to Use instructions coming soon.</p>",
-            whoItsFor: "<p>Who It's For details coming soon.</p>",
-        };
-    }
-
-    // Split the content using the markers.
-    // INFERRED MARKERS based on variable names.
-    const content = htmlContent || "";
-
-    const splitKeyBenefits = content.split('<!-- split:key-benefits -->');
-    const whatItDoes = splitKeyBenefits[0]?.trim();
-    let remaining = splitKeyBenefits[1] || '';
-
-    const splitHowToUse = remaining.split('<!-- split:how-to-use -->');
-    const keyBenefits = splitHowToUse[0]?.trim();
-    remaining = splitHowToUse[1] || '';
-
-    const splitWhoItsFor = remaining.split('<!-- split:who-its-for -->');
-    const howToUse = splitWhoItsFor[0]?.trim();
-    const whoItsFor = splitWhoItsFor[1] || '';
-
-
-    // Return sections, using defaults if a split marker was not found
-    return {
-        whatItDoes: whatItDoes || "<p>Supports general wellness and vitality.</p>",
-        keyBenefits: keyBenefits || "<p>Key Benefits content coming soon.</p>",
-        howToUse: howToUse || "<p>How to Use instructions coming soon.</p>",
-        whoItsFor: whoItsFor || "<p>Who It's For details coming soon.</p>",
-    };
-}
-// =========================================================================
-
-
 async function fetchProductData(handle: string) {
     const product = await getProduct(handle);
     return product;
@@ -68,10 +27,6 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
         );
     }
-
-    // NEW: Parse all product content once
-    const { whatItDoes, keyBenefits, howToUse, whoItsFor } = parseProductContent(product.descriptionHtml);
-
 
     // Data needed for the design
     const category = product.tags?.[0] || "Wellness";
@@ -140,7 +95,13 @@ export default async function ProductDetailPage({ params }: Props) {
                             }).format(parseFloat(price.amount))}
                         </div>
 
-                        {/* 5. INSTRUCTION BADGE */}
+                        {/* 5. MAIN DESCRIPTION PARAGRAPH */}
+                        <div
+                            className="text-lg text-gray-700 leading-relaxed mb-8 prose max-w-none"
+                            dangerouslySetInnerHTML={{ __html: product.descriptionHtml || '' }}
+                        />
+
+                        {/* 6. INSTRUCTION BADGE */}
                         <div className="flex items-center gap-2 bg-orange-50 inline-flex px-4 py-2 rounded-full mb-10">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-orange-400">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -148,31 +109,17 @@ export default async function ProductDetailPage({ params }: Props) {
                             <span className="text-sm font-medium text-gray-700">Take with food</span>
                         </div>
 
-                        {/* 6. ACTIONS (Quantity + Add to Cart) */}
+                        {/* 7. ACTIONS (Quantity + Add to Cart) */}
                         <ProductActions variantId={product.variants[0].id} />
 
-                        {/* 7. ACCORDIONS - NOW DYNAMICALLY POPULATED */}
-                        <div className="mb-12 border-t border-gray-100">
-                            <Accordion
-                                title="What It Does"
-                                content={whatItDoes}
-                            />
-                            <Accordion
-                                title="Key Benefits"
-                                content={keyBenefits}
-                            />
-                            <Accordion
-                                title="How to Use"
-                                content={howToUse}
-                            />
-                            <Accordion
-                                title="Who It's For"
-                                content={whoItsFor}
-                            />
-                        </div>
+                        {/* 8. ACCORDIONS - REMOVED AS REQUESTED */}
+                        {/*
+                           Previous Accordions (Key Benefits, How to Use, Who It's For) have been removed.
+                           The content is expected to be part of the main description if needed.
+                        */}
 
-                        {/* 8. DISCLAIMER BOX */}
-                        <div className="bg-gray-50 p-6 rounded-xl flex gap-4 items-start">
+                        {/* 9. DISCLAIMER BOX */}
+                        <div className="bg-gray-50 p-6 rounded-xl flex gap-4 items-start mt-12">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-400 flex-shrink-0">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                             </svg>
