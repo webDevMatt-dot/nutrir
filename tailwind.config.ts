@@ -35,7 +35,9 @@ const config = { // <-- Removed "type: Config" here
             },
         },
     },
-    plugins: [],
+    plugins: [
+        require('@tailwindcss/typography'),
+    ],
 };
 
 // --- THE CRITICAL FIX: Assert the type on export ---

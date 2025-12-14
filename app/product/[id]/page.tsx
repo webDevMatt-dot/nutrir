@@ -5,6 +5,7 @@ import { getProduct } from "../../lib/shopify";
 import ProductActions from "../../components/ProductActions";
 import ViewItemTracker from "../../components/ViewItemTracker";
 import ProductReviews from "../../components/ProductReviews";
+import ProductDescription from "../../components/ProductDescription";
 
 type Props = {
     params: Promise<{ id: string }>;
@@ -95,22 +96,22 @@ export default async function ProductDetailPage({ params }: Props) {
                         </div> */}
 
                         {/* 5. MAIN DESCRIPTION PARAGRAPH */}
-                        <div
-                            className="text-lg text-gray-700 leading-relaxed mb-8 prose max-w-none"
-                            dangerouslySetInnerHTML={{ __html: product.descriptionHtml || '' }}
-                        />
+                        {/* 5. DESCRIPTION & ACCORDIONS */}
+                        <ProductDescription html={product.descriptionHtml || ''} />
 
-                        {/* 6. INSTRUCTION BADGE (Dynamic) */}
+                        {/* 6. INSTRUCTION BADGES (Dynamic - Multiple Supported) */}
                         {(() => {
                             const tags = product.tags?.map((t: any) => (typeof t === 'string' ? t : t.value).toLowerCase()) || [];
+                            const badges = [];
+
                             const withFood = tags.some((t: string) => t.includes("with food"));
                             const emptyStomach = tags.some((t: string) => t.includes("empty stomach"));
                             const beforeFood = tags.some((t: string) => t.includes("before food"));
                             const afterMeal = tags.some((t: string) => t.includes("after meal"));
 
                             if (withFood) {
-                                return (
-                                    <div className="flex items-center gap-2 bg-orange-50 inline-flex px-4 py-2 rounded-full mb-10">
+                                badges.push(
+                                    <div key="with-food" className="flex items-center gap-2 bg-orange-50 inline-flex px-4 py-2 rounded-full">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-orange-400">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
@@ -120,8 +121,8 @@ export default async function ProductDetailPage({ params }: Props) {
                             }
 
                             if (emptyStomach) {
-                                return (
-                                    <div className="flex items-center gap-2 bg-blue-50 inline-flex px-4 py-2 rounded-full mb-10">
+                                badges.push(
+                                    <div key="empty-stomach" className="flex items-center gap-2 bg-blue-50 inline-flex px-4 py-2 rounded-full">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-blue-400">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
@@ -131,8 +132,8 @@ export default async function ProductDetailPage({ params }: Props) {
                             }
 
                             if (beforeFood) {
-                                return (
-                                    <div className="flex items-center gap-2 bg-purple-50 inline-flex px-4 py-2 rounded-full mb-10">
+                                badges.push(
+                                    <div key="before-food" className="flex items-center gap-2 bg-purple-50 inline-flex px-4 py-2 rounded-full">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-purple-400">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
@@ -142,8 +143,8 @@ export default async function ProductDetailPage({ params }: Props) {
                             }
 
                             if (afterMeal) {
-                                return (
-                                    <div className="flex items-center gap-2 bg-teal-50 inline-flex px-4 py-2 rounded-full mb-10">
+                                badges.push(
+                                    <div key="after-meal" className="flex items-center gap-2 bg-teal-50 inline-flex px-4 py-2 rounded-full">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-teal-400">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
@@ -152,7 +153,13 @@ export default async function ProductDetailPage({ params }: Props) {
                                 );
                             }
 
-                            return null;
+                            if (badges.length === 0) return null;
+
+                            return (
+                                <div className="flex flex-wrap gap-3 mb-10">
+                                    {badges}
+                                </div>
+                            );
                         })()}
 
                         {/* 7. ACTIONS (Quantity + Add to Cart) - Now handles Price & Variant Selection */}
