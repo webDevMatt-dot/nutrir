@@ -39,6 +39,31 @@ export default async function ProductDetailPage({ params }: Props) {
     const badgeBgColor = category.toLowerCase().includes("female") ? "bg-pink-50" : "bg-[#E8F4F1]";
 
 
+    // --- PARSE HTML DESCRIPTION (Server-Side to prevent FOUC) ---
+    let processedHtml = product.descriptionHtml || '';
+
+    // 1. Unescape headers
+    processedHtml = processedHtml.replace(/&lt;(h[3-6])&gt;/gi, '<$1>').replace(/&lt;\/(h[3-6])&gt;/gi, '</$1>');
+
+    // 2. Strip scripts/styles (Basic sanitization)
+    processedHtml = processedHtml.replace(/<!--[\s\S]*?-->/g, '');
+    processedHtml = processedHtml.replace(/<\/?(script|style|iframe|object|embed)[^>]*>/gi, '');
+
+    // 3. Split into Main + Accordions
+    // Regex splits at any h3-h6 tag
+    const parts = processedHtml.split(/(?=<h[3-6](?:[^>]+)?>)/i);
+
+    // SANITIZATION: Strip </div> from main description to prevent breaking the layout container
+    // If we leave </div> in, it might close the parent div of ProductDescription, causing hydration mismatch.
+    const mainDescription = parts[0].replace(/<\/div>/gi, '');
+
+    const accordionSections = parts.slice(1).map((part: string) => {
+        const match = part.match(/<h[3-6](?:[^>]+)?>([\s\S]*?)<\/h[3-6]>/i);
+        const title = match ? match[1].replace(/<[^>]+>/g, '').trim() : "More Info";
+        const content = part.replace(/<h[3-6](?:[^>]+)?>([\s\S]*?)<\/h[3-6]>/i, '');
+        return { title, content };
+    });
+
     return (
         <div className="min-h-screen bg-white pt-8 pb-20">
             {/* --- TRACKER COMPONENT --- */}
@@ -86,18 +111,11 @@ export default async function ProductDetailPage({ params }: Props) {
                             </span>
                         </div>
 
-                        {/* 4. PRICE (Moved to ProductActions for dynamic updates) */}
-                        {/* <div className="text-3xl font-bold text-[#1A2621] mb-8">
-                            {new Intl.NumberFormat('en-US', {
-                                style: 'currency',
-                                currency: price.currencyCode || 'USD',
-                                minimumFractionDigits: 2
-                            }).format(parseFloat(price.amount))}
-                        </div> */}
-
-                        {/* 5. MAIN DESCRIPTION PARAGRAPH */}
-                        {/* 5. DESCRIPTION & ACCORDIONS */}
-                        <ProductDescription html={product.descriptionHtml || ''} />
+                        {/* 5. DESCRIPTION & ACCORDIONS (Server Parsed) */}
+                        <ProductDescription
+                            mainDescription={mainDescription}
+                            accordionSections={accordionSections}
+                        />
 
                         {/* 6. INSTRUCTION BADGES (Dynamic - Multiple Supported) */}
                         {(() => {
