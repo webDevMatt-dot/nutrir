@@ -206,7 +206,27 @@ export default function ProductCard({ product, index }: Props) {
                     {product.title}
                 </h3>
                 <p className="text-sm text-gray-500 line-clamp-2 mb-3 h-10 leading-relaxed">
-                    {product.description || "Premium formula for daily wellness support."}
+                    {(() => {
+                        // PREVIEW GENERATION:
+                        // 1. Prefer descriptionHtml so we can selectively strip headers ("What It Does")
+                        // 2. Fallback to plain description
+                        // 3. Last fallback to hardcoded string
+                        let text = product.descriptionHtml || product.description || "";
+
+                        if (product.descriptionHtml) {
+                            // 0. UNESCAPE HEADERS (Fix for literal <h3> tags showing up)
+                            // User might have typed <h3> in visual editor, or API returns escaped HTML
+                            text = text.replace(/&lt;(h[1-6])&gt;/gi, '<$1>').replace(/&lt;\/(h[1-6])&gt;/gi, '</$1>');
+
+                            // Remove headers AND their content (e.g. <h3>What It Does</h3> -> "")
+                            // This ensures we jump straight to the body text
+                            text = text.replace(/<h[1-6][^>]*>[\s\S]*?<\/h[1-6]>/gi, " ");
+                            // Strip remaining HTML tags (p, div, b, etc) but keep their content
+                            text = text.replace(/<[^>]+>/g, "");
+                        }
+
+                        return text.trim() || "Premium formula for daily wellness support.";
+                    })()}
                 </p>
                 <div className="text-lg font-medium text-[#1A2621]">
                     {product.variants.length > 1 && <span className="text-sm font-normal text-gray-500 mr-1">Starting at</span>}
