@@ -89,7 +89,7 @@ export default function Navbar() {
                                 )}
                             </button>
 
-                            <button onClick={toggleProfile} className="text-[#1A2621] hover:text-[#D4AF37] transition">
+                            <button onClick={toggleProfile} className="hidden sm:block text-[#1A2621] hover:text-[#D4AF37] transition">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                                 </svg>
@@ -133,6 +133,19 @@ export default function Navbar() {
                         <Link href="/policies" className="text-lg font-medium text-[#1A2621]" onClick={() => setIsMobileMenuOpen(false)}>Policies</Link>
                         <Link href="/faq" className="text-lg font-medium text-[#1A2621]" onClick={() => setIsMobileMenuOpen(false)}>FAQ</Link>
                         <Link href="/contact" className="text-lg font-medium text-[#1A2621]" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+
+                        {/* Mobile Account Access */}
+                        <div className="pt-6 border-t border-gray-100 mt-2">
+                            <button
+                                onClick={() => { setIsMobileMenuOpen(false); toggleProfile(); }}
+                                className="flex items-center gap-3 text-lg font-medium text-[#1A2621] w-full"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
+                                My Account
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
