@@ -91,8 +91,8 @@ export default function ProductCard({ product, index }: Props) {
                             className="w-full h-full object-contain drop-shadow-2xl relative z-10 transition-transform duration-500 group-hover:scale-110"
                         />
                     ) : (
-                        <div className="w-24 h-32 bg-[#2D3A31]/10 rounded flex items-center justify-center">
-                            <span className="text-[#2D3A31] font-bold opacity-20">IMG</span>
+                        <div className="w-full h-full bg-[#2D3A31]/10 rounded flex items-center justify-center">
+                            <span className="text-[#2D3A31] font-serif text-6xl opacity-20">{product.title?.charAt(0) || "N"}</span>
                         </div>
                     )}
                 </div>
@@ -119,8 +119,8 @@ export default function ProductCard({ product, index }: Props) {
                                     }}
                                     disabled={!v.availableForSale}
                                     className={`text-left text-xs font-bold px-3 py-2 rounded-lg transition-colors flex justify-between items-center whitespace-nowrap ${v.availableForSale
-                                            ? "text-[#1A2621] hover:bg-gray-50"
-                                            : "text-gray-400 bg-gray-50 cursor-not-allowed"
+                                        ? "text-[#1A2621] hover:bg-gray-50"
+                                        : "text-gray-400 bg-gray-50 cursor-not-allowed"
                                         }`}
                                 >
                                     <span>{v.title}</span>
@@ -162,10 +162,10 @@ export default function ProductCard({ product, index }: Props) {
                         }}
                         disabled={!product.variants[0]?.availableForSale && product.variants.length === 1}
                         className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg z-30 ${(!product.variants[0]?.availableForSale && product.variants.length === 1)
-                                ? "bg-gray-300 cursor-not-allowed opacity-100 translate-y-0"
-                                : isSelectorOpen
-                                    ? "bg-[#D4AF37] text-black opacity-100 translate-y-0"
-                                    : "bg-[#1A2621] text-white opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[#D4AF37] hover:text-black"
+                            ? "bg-gray-300 cursor-not-allowed opacity-100 translate-y-0"
+                            : isSelectorOpen
+                                ? "bg-[#D4AF37] text-black opacity-100 translate-y-0"
+                                : "bg-[#1A2621] text-white opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[#D4AF37] hover:text-black"
                             }`}
                     >
                         {isSelectorOpen ? (
