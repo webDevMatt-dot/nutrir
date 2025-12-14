@@ -142,7 +142,7 @@ export default function ContactPage() {
                                             type="text"
                                             id="name"
                                             name="name"
-                                            className="w-full bg-white border border-transparent focus:border-[#D4AF37] rounded-xl px-4 py-3 outline-none transition duration-300"
+                                            className="w-full bg-white border border-transparent focus:border-[#D4AF37] rounded-xl px-4 py-3 outline-none transition duration-300 text-[#1A2621]"
                                             placeholder="Your Name"
                                         />
                                     </div>
@@ -153,7 +153,7 @@ export default function ContactPage() {
                                             type="email"
                                             id="email"
                                             name="email"
-                                            className="w-full bg-white border border-transparent focus:border-[#D4AF37] rounded-xl px-4 py-3 outline-none transition duration-300"
+                                            className="w-full bg-white border border-transparent focus:border-[#D4AF37] rounded-xl px-4 py-3 outline-none transition duration-300 text-[#1A2621]"
                                             placeholder="hello@example.com"
                                         />
                                     </div>
@@ -165,7 +165,7 @@ export default function ContactPage() {
                                         <select
                                             id="subject"
                                             name="subject"
-                                            className="w-full bg-white border border-transparent focus:border-[#D4AF37] rounded-xl px-4 py-3 outline-none transition duration-300 appearance-none"
+                                            className="w-full bg-white border border-transparent focus:border-[#D4AF37] rounded-xl px-4 py-3 outline-none transition duration-300 appearance-none text-[#1A2621]"
                                         >
                                             <option value="General Inquiry">General Inquiry</option>
                                             <option value="Order Status">Order Status</option>
@@ -188,7 +188,7 @@ export default function ContactPage() {
                                         id="message"
                                         name="message"
                                         rows={5}
-                                        className="w-full bg-white border border-transparent focus:border-[#D4AF37] rounded-xl px-4 py-3 outline-none transition duration-300 resize-none"
+                                        className="w-full bg-white border border-transparent focus:border-[#D4AF37] rounded-xl px-4 py-3 outline-none transition duration-300 resize-none text-[#1A2621]"
                                         placeholder="How can we help you?"
                                     ></textarea>
                                 </div>
