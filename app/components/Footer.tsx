@@ -37,20 +37,51 @@ export default function Footer() {
 
                     {/* Left Column: Brand & Socials */}
                     <div className="md:col-span-6 space-y-6">
-                        <h2 className="text-2xl font-serif tracking-widest text-[#D4AF37]">N U T R I R</h2>
+                        <Link href="/" className="inline-block">
+                            <h2 className="text-2xl font-serif tracking-widest text-[#D4AF37] hover:opacity-80 transition">N U T R I R</h2>
+                        </Link>
                         <p className="text-gray-400 max-w-sm leading-relaxed">
                             Science-aligned supplements designed to bridge the gap between effective clinical research and natural wellness.
                         </p>
 
-                        {/* Social Icons (Circles) */}
+                        {/* Social Icons */}
                         <div className="flex gap-4 pt-2">
-                            {[1, 2, 3].map((i) => (
-                                <div key={i} className="w-10 h-10 rounded-full bg-[#2A3831] flex items-center justify-center hover:bg-[#D4AF37] hover:text-black transition cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                    </svg>
-                                </div>
-                            ))}
+                            {/* Facebook */}
+                            <a
+                                href="https://web.facebook.com/nutrirfoods"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-10 h-10 rounded-full bg-[#2A3831] flex items-center justify-center hover:bg-[#D4AF37] hover:text-black transition cursor-pointer text-white"
+                                aria-label="Facebook"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                                </svg>
+                            </a>
+
+                            {/* Email */}
+                            <a
+                                href="mailto:admin@nutrirfoods.com"
+                                className="w-10 h-10 rounded-full bg-[#2A3831] flex items-center justify-center hover:bg-[#D4AF37] hover:text-black transition cursor-pointer text-white"
+                                aria-label="Email"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                </svg>
+                            </a>
+
+                            {/* WhatsApp */}
+                            <a
+                                href="https://wa.me/263785838876"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-10 h-10 rounded-full bg-[#2A3831] flex items-center justify-center hover:bg-[#D4AF37] hover:text-black transition cursor-pointer text-white"
+                                aria-label="WhatsApp"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M18.403 5.633A8.919 8.919 0 0012.053 3c-4.948 0-8.976 4.027-8.978 8.977 0 1.582.413 3.126 1.198 4.488L3 21.116l4.759-1.249a8.981 8.981 0 004.29 1.093h.004c4.947 0 8.975-4.027 8.977-8.977a8.926 8.926 0 00-2.627-6.35m-6.35 13.812h-.003a7.446 7.446 0 01-3.798-1.041l-.272-.162-2.824.741.753-2.753-.177-.282a7.448 7.448 0 01-1.141-3.971c.002-4.114 3.349-7.461 7.465-7.461a7.413 7.413 0 015.275 2.188 7.42 7.42 0 012.183 5.279c-.002 4.114-3.349 7.462-7.463 7.462m4.093-5.589c-.225-.113-1.327-.655-1.533-.73-.205-.075-.354-.112-.504.112-.15.224-.579.73-.71.88-.131.15-.262.169-.486.056-.224-.113-.953-.351-1.815-1.12-.673-.6-1.125-1.34-1.257-1.565-.132-.224-.014-.345.098-.458.101-.101.224-.263.336-.395.113-.131.15-.224.225-.374.075-.15.038-.281-.019-.393-.056-.113-.504-1.214-.69-1.663-.181-.435-.366-.376-.504-.383-.131-.007-.281-.007-.431-.007-.15 0-.394.056-.6.281-.206.225-.787.769-.787 1.876 0 1.107.805 2.176.917 2.326.112.15 1.586 2.421 3.842 3.395 1.62.698 1.953.56 2.668.524.715-.037 1.327-.543 1.514-1.067.187-.524.187-.973.131-1.067-.056-.094-.207-.169-.432-.281z" />
+                                </svg>
+                            </a>
                         </div>
                     </div>
 
@@ -62,6 +93,7 @@ export default function Footer() {
                             <li><Link href="/our-story" className="hover:text-white transition">Our Story</Link></li>
                             <li><Link href="/policies" className="hover:text-white transition">Policies</Link></li>
                             <li><Link href="/faq" className="hover:text-white transition">FAQ</Link></li>
+                            <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
                         </ul>
                     </div>
 
