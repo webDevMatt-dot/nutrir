@@ -46,7 +46,7 @@ export default async function ProductDetailPage({ params }: Props) {
             {/* ------------------------- */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* 1. BACK LINK */}
-                <Link href="/" className="inline-flex items-center text-sm text-gray-500 hover:text-black mb-8 transition">
+                <Link href="/collections/all-products" className="inline-flex items-center text-sm text-gray-500 hover:text-black mb-8 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                     </svg>

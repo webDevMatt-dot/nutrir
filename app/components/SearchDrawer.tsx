@@ -113,7 +113,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
                             {results.map((product) => (
                                 <Link
                                     key={product.id}
-                                    href={`/product/${encodeURIComponent(product.id)}`}
+                                    href={`/product/${product.handle}`}
                                     onClick={handleClose}
                                     className="flex gap-4 group"
                                 >
