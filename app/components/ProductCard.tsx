@@ -1,6 +1,7 @@
 // app/components/ProductCard.tsx
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "../context/CartContext";
 
@@ -11,7 +12,19 @@ interface Props {
 
 export default function ProductCard({ product, index }: Props) {
     const { addToCart } = useCart();
-    const [isSelectorOpen, setIsSelectorOpen] = require("react").useState(false);
+    const [isSelectorOpen, setIsSelectorOpen] = useState(false);
+
+    // Close selector on scroll
+    useEffect(() => {
+        if (!isSelectorOpen) return;
+
+        const handleScroll = () => {
+            setIsSelectorOpen(false);
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [isSelectorOpen]);
 
     // --- BRANDED COLOR MAP (User's Final Design) ---
     const colorMap: { [key: string]: string } = {
@@ -100,7 +113,7 @@ export default function ProductCard({ product, index }: Props) {
                     {/* VARIANT SELECTOR MENU */}
                     {isSelectorOpen && product.variants.length > 1 && (
                         <div
-                            className="bg-white rounded-xl shadow-xl p-2 mb-2 flex flex-col gap-2 min-w-[120px] animate-in fade-in slide-in-from-bottom-2 duration-200"
+                            className="bg-white rounded-xl shadow-xl p-2 mb-2 flex flex-col gap-2 min-w-[200px] max-w-[260px] animate-in fade-in slide-in-from-bottom-2 duration-200"
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -118,14 +131,14 @@ export default function ProductCard({ product, index }: Props) {
                                         }
                                     }}
                                     disabled={!v.availableForSale}
-                                    className={`text-left text-xs font-bold px-3 py-2 rounded-lg transition-colors flex justify-between items-center whitespace-nowrap ${v.availableForSale
+                                    className={`text-left text-xs font-bold px-3 py-2 rounded-lg transition-colors flex justify-between items-start gap-3 w-full ${v.availableForSale
                                         ? "text-[#1A2621] hover:bg-gray-50"
                                         : "text-gray-400 bg-gray-50 cursor-not-allowed"
                                         }`}
                                 >
-                                    <span>{v.title}</span>
+                                    <span className="break-words flex-1 leading-tight">{v.title}</span>
                                     {v.availableForSale ? (
-                                        <span className="text-gray-400 font-normal ml-2">
+                                        <span className="text-gray-400 font-normal whitespace-nowrap">
                                             {new Intl.NumberFormat('en-US', {
                                                 style: 'currency',
                                                 currency: v.price?.currencyCode || 'USD',
@@ -133,7 +146,7 @@ export default function ProductCard({ product, index }: Props) {
                                             }).format(parseFloat(v.price?.amount || "0"))}
                                         </span>
                                     ) : (
-                                        <span className="text-red-400 font-normal ml-2 text-[10px] uppercase">
+                                        <span className="text-red-400 font-normal text-[10px] uppercase whitespace-nowrap">
                                             Sold Out
                                         </span>
                                     )}
