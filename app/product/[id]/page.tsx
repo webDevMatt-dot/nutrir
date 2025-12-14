@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { getProduct } from "../../lib/shopify";
-import Accordion from "../../components/Accordion";
 import ProductActions from "../../components/ProductActions";
 import ViewItemTracker from "../../components/ViewItemTracker";
 import ProductReviews from "../../components/ProductReviews";
@@ -86,14 +85,14 @@ export default async function ProductDetailPage({ params }: Props) {
                             </span>
                         </div>
 
-                        {/* 4. PRICE (Updated to ZAR) */}
-                        <div className="text-3xl font-bold text-[#1A2621] mb-8">
+                        {/* 4. PRICE (Moved to ProductActions for dynamic updates) */}
+                        {/* <div className="text-3xl font-bold text-[#1A2621] mb-8">
                             {new Intl.NumberFormat('en-US', {
                                 style: 'currency',
                                 currency: price.currencyCode || 'USD',
                                 minimumFractionDigits: 2
                             }).format(parseFloat(price.amount))}
-                        </div>
+                        </div> */}
 
                         {/* 5. MAIN DESCRIPTION PARAGRAPH */}
                         <div
@@ -109,8 +108,8 @@ export default async function ProductDetailPage({ params }: Props) {
                             <span className="text-sm font-medium text-gray-700">Take with food</span>
                         </div>
 
-                        {/* 7. ACTIONS (Quantity + Add to Cart) */}
-                        <ProductActions variantId={product.variants[0].id} />
+                        {/* 7. ACTIONS (Quantity + Add to Cart) - Now handles Price & Variant Selection */}
+                        <ProductActions variants={product.variants} />
 
                         {/* 8. ACCORDIONS - REMOVED AS REQUESTED */}
                         {/*

@@ -55,10 +55,11 @@ const productFragment = `
       }
     }
   }
-  variants(first: 1) {
+  variants(first: 20) {
     edges {
       node {
         id
+        title
         price {
           amount
           currencyCode
