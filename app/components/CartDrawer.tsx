@@ -3,13 +3,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
+
 import { useCart } from "../context/CartContext";
 import { beginCheckoutEvent } from "../lib/analytics";
 
 export default function CartDrawer() {
-    // --- UPDATED: Destructuring updateLineItemQuantity ---
-    const { cart, isCartOpen, toggleCart, removeLineItem, updateLineItemQuantity } = useCart();
+    // --- UPDATED: Destructuring updateLineItemQuantity and clearCart ---
+    const { cart, isCartOpen, toggleCart, removeLineItem, updateLineItemQuantity, clearCart } = useCart();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -117,20 +117,30 @@ export default function CartDrawer() {
                     </div>
 
                     {/* Checkout Button */}
-                    {cart?.webUrl ? (
-                        <Link
-                            href={cart.webUrl}
-                            onClick={() => {
+                    <button
+                        onClick={() => {
+                            if (!cart?.lineItems || cart.lineItems.length === 0) {
+                                alert("Cart empty, can't proceed.");
+                                return;
+                            }
+                            if (cart?.webUrl) {
                                 beginCheckoutEvent(cart);
                                 toggleCart();
-                            }}
-                            className="block w-full bg-black text-white text-center py-4 rounded-lg hover:bg-gray-800 transition font-medium"
+                                window.location.href = cart.webUrl;
+                            }
+                        }}
+                        className="block w-full bg-black text-white text-center py-4 rounded-lg hover:bg-gray-800 transition font-medium mb-3"
+                    >
+                        Proceed to Checkout
+                    </button>
+
+                    {/* Clear Cart Button */}
+                    {cart?.lineItems?.length > 0 && (
+                        <button
+                            onClick={clearCart}
+                            className="block w-full border border-gray-300 text-gray-500 text-center py-3 rounded-lg hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition text-sm mb-2"
                         >
-                            Proceed to Checkout
-                        </Link>
-                    ) : (
-                        <button disabled className="block w-full bg-gray-300 text-white text-center py-4 rounded-lg cursor-not-allowed">
-                            Proceed to Checkout
+                            Clear Cart
                         </button>
                     )}
                 </div>

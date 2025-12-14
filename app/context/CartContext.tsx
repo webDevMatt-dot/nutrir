@@ -14,6 +14,7 @@ interface CartContextType {
     removeLineItem: (lineItemId: string) => Promise<void>;
     // --- NEW: Function to update an item's quantity ---
     updateLineItemQuantity: (lineItemId: string, quantity: number) => Promise<void>;
+    clearCart: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType>({} as CartContextType);
@@ -103,12 +104,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setCart(updatedCart);
     }
 
+    // --- NEW: Clear Cart Function ---
+    async function clearCart() {
+        if (!cart || !cart.lineItems || cart.lineItems.length === 0) return;
+
+        const lineItemIds = cart.lineItems.map((item: any) => item.id);
+        const updatedCart = await client.checkout.removeLineItems(cart.id, lineItemIds);
+        setCart(updatedCart);
+    }
+
     function toggleCart() {
         setIsCartOpen(!isCartOpen);
     }
 
     return (
-        <CartContext.Provider value={{ cart, isCartOpen, addToCart, toggleCart, removeLineItem, updateLineItemQuantity }}>
+        <CartContext.Provider value={{ cart, isCartOpen, addToCart, toggleCart, removeLineItem, updateLineItemQuantity, clearCart }}>
             {children}
         </CartContext.Provider>
     );
