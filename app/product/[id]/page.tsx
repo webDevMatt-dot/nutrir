@@ -1,26 +1,64 @@
 // app/product/[id]/page.tsx - FINAL VERSION
 
 import Link from "next/link";
-import { getProduct } from "../../lib/shopify"; // <-- Using robust utility
+import { getProduct } from "../../lib/shopify";
 import Accordion from "../../components/Accordion";
 import ProductActions from "../../components/ProductActions";
-import ViewItemTracker from "../../components/ViewItemTracker"; // <-- Component to handle GA4
-import ProductReviews from "../../components/ProductReviews"; // <--- NEW IMPORT
+import ViewItemTracker from "../../components/ViewItemTracker";
+import ProductReviews from "../../components/ProductReviews";
 
 type Props = {
     params: Promise<{ id: string }>;
 };
 
-// Use the robust getProduct from lib/shopify.ts which handles ID decoding and fetching
+// =========================================================================
+// NEW UTILITY FUNCTION TO PARSE STRUCTURED CONTENT FROM product.descriptionHtml
+// =========================================================================
+function parseProductContent(htmlContent: string) {
+    if (!htmlContent) {
+        return {
+            whatItDoes: "<p>Supports general wellness and vitality.</p>",
+            keyBenefits: "<p>Key Benefits content coming soon.</p>",
+            howToUse: "<p>How to Use instructions coming soon.</p>",
+            whoItsFor: "<p>Who It's For details coming soon.</p>",
+        };
+    }
+
+    // Split the content using the markers.
+    // INFERRED MARKERS based on variable names.
+    const content = htmlContent || "";
+
+    const splitKeyBenefits = content.split('<!-- split:key-benefits -->');
+    const whatItDoes = splitKeyBenefits[0]?.trim();
+    let remaining = splitKeyBenefits[1] || '';
+
+    const splitHowToUse = remaining.split('<!-- split:how-to-use -->');
+    const keyBenefits = splitHowToUse[0]?.trim();
+    remaining = splitHowToUse[1] || '';
+
+    const splitWhoItsFor = remaining.split('<!-- split:who-its-for -->');
+    const howToUse = splitWhoItsFor[0]?.trim();
+    const whoItsFor = splitWhoItsFor[1] || '';
+
+
+    // Return sections, using defaults if a split marker was not found
+    return {
+        whatItDoes: whatItDoes || "<p>Supports general wellness and vitality.</p>",
+        keyBenefits: keyBenefits || "<p>Key Benefits content coming soon.</p>",
+        howToUse: howToUse || "<p>How to Use instructions coming soon.</p>",
+        whoItsFor: whoItsFor || "<p>Who It's For details coming soon.</p>",
+    };
+}
+// =========================================================================
+
+
 async function fetchProductData(handle: string) {
-    // The decodedId logic is for the Global ID, which we are removing.
-    // We now pass the handle directly to getProduct.
     const product = await getProduct(handle);
     return product;
 }
 
 export default async function ProductDetailPage({ params }: Props) {
-    const { id: handle } = await params; // Destructure and rename id to handle
+    const { id: handle } = await params;
     const product = await fetchProductData(handle);
 
     if (!product) {
@@ -30,6 +68,10 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
         );
     }
+
+    // NEW: Parse all product content once
+    const { whatItDoes, keyBenefits, howToUse, whoItsFor } = parseProductContent(product.descriptionHtml);
+
 
     // Data needed for the design
     const category = product.tags?.[0] || "Wellness";
@@ -109,15 +151,24 @@ export default async function ProductDetailPage({ params }: Props) {
                         {/* 6. ACTIONS (Quantity + Add to Cart) */}
                         <ProductActions variantId={product.variants[0].id} />
 
-                        {/* 7. ACCORDIONS */}
+                        {/* 7. ACCORDIONS - NOW DYNAMICALLY POPULATED */}
                         <div className="mb-12 border-t border-gray-100">
                             <Accordion
                                 title="What It Does"
-                                content={product.descriptionHtml || "<p>Supports general wellness and vitality.</p>"}
+                                content={whatItDoes}
                             />
-                            <Accordion title="Key Benefits" content="<ul><li>Supports hormonal balance</li><li>Aids emotional regulation</li><li>Promotes cycle regularity</li></ul>" />
-                            <Accordion title="How to Use" content="<p>Take 2 capsules daily with your morning meal.</p>" />
-                            <Accordion title="Who It's For" content="<p>Adult women seeking nutritional support for hormonal health.</p>" />
+                            <Accordion
+                                title="Key Benefits"
+                                content={keyBenefits}
+                            />
+                            <Accordion
+                                title="How to Use"
+                                content={howToUse}
+                            />
+                            <Accordion
+                                title="Who It's For"
+                                content={whoItsFor}
+                            />
                         </div>
 
                         {/* 8. DISCLAIMER BOX */}
