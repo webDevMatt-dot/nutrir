@@ -209,6 +209,7 @@ export default function ProductCard({ product, index }: Props) {
                     {product.description || "Premium formula for daily wellness support."}
                 </p>
                 <div className="text-lg font-medium text-[#1A2621]">
+                    {product.variants.length > 1 && <span className="text-sm font-normal text-gray-500 mr-1">Starting at</span>}
                     {formattedPrice}
                 </div>
             </div>
