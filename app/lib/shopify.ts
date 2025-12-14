@@ -60,6 +60,7 @@ const productFragment = `
       node {
         id
         title
+        availableForSale
         price {
           amount
           currencyCode
