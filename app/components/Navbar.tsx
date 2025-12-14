@@ -53,6 +53,9 @@ export default function Navbar() {
                             <Link href="/policies" className="text-[#1A2621] text-sm font-medium hover:text-[#D4AF37] transition">
                                 Policies
                             </Link>
+                            <Link href="/faq" className="text-[#1A2621] text-sm font-medium hover:text-[#D4AF37] transition">
+                                FAQ
+                            </Link>
                         </div>
 
                         {/* RIGHT: ICONS */}
@@ -124,6 +127,7 @@ export default function Navbar() {
                         <Link href="/" className="text-lg font-medium text-[#1A2621]" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
                         <Link href="/collections/all-products" className="text-lg font-medium text-[#1A2621]" onClick={() => setIsMobileMenuOpen(false)}>Shop</Link>
                         <Link href="/our-story" className="text-lg font-medium text-[#1A2621]" onClick={() => setIsMobileMenuOpen(false)}>Our Story</Link>
+                        <Link href="/faq" className="text-lg font-medium text-[#1A2621]" onClick={() => setIsMobileMenuOpen(false)}>FAQ</Link>
                         <Link href="/policies" className="text-lg font-medium text-[#1A2621]" onClick={() => setIsMobileMenuOpen(false)}>Policies</Link>
                     </div>
                 </div>

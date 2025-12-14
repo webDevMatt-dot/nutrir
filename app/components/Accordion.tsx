@@ -5,13 +5,14 @@ import { useState } from "react";
 interface Props {
     title: string;
     content: string;
+    className?: string;
 }
 
-export default function Accordion({ title, content }: Props) {
+export default function Accordion({ title, content, className = "" }: Props) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="border-b border-gray-100 py-4">
+        <div className={`border-b border-gray-100 py-4 ${className}`}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex justify-between items-center text-left focus:outline-none group"
