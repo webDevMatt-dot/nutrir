@@ -2,7 +2,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { client } from "../lib/shopify";
+import { client, associateCustomerWithCheckout } from "../lib/shopify";
 import { addToCartEvent } from "../lib/analytics";
 import { useAuth } from "./AuthContext";
 
@@ -45,10 +45,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             // Only associate if we have a token and the cart isn't already associated
             const token = localStorage.getItem("shopify_customer_token");
             if (token && currentCart && !(currentCart as any).customer) {
-                // Using 'any' cast for client because associateCustomer might be missing in the strict type definition of the SDK wrapper
-                // but it is a valid Storefront API mutation. 
-                const updatedCart = await (client.checkout as any).associateCustomer(currentCart.id, token);
-                setCart(updatedCart);
+
+                // FIX: Replace failing SDK call with robust GraphQL mutation
+                const associationResult = await associateCustomerWithCheckout(currentCart.id, token);
+
+                if (associationResult?.checkout?.id) {
+                    // Success: The customer is now associated. We must fetch the full object
+                    // using the working SDK fetch method to update the context state.
+                    const updatedCart = await client.checkout.fetch(currentCart.id);
+                    setCart(updatedCart);
+                } else if (associationResult?.userErrors?.length) {
+                    // Log the error but continue with the unassociated cart
+                    console.error("Customer association failed:", associationResult.userErrors[0].message);
+                }
             }
         }
         initializeCart();
