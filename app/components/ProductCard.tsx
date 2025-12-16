@@ -1,7 +1,7 @@
 // app/components/ProductCard.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useCart } from "../context/CartContext";
 
@@ -13,6 +13,23 @@ interface Props {
 export default function ProductCard({ product, index }: Props) {
     const { addToCart } = useCart();
     const [isSelectorOpen, setIsSelectorOpen] = useState(false);
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    const handleImageScroll = () => {
+        if (scrollContainerRef.current) {
+            const { scrollLeft, clientWidth } = scrollContainerRef.current;
+            const index = Math.round(scrollLeft / clientWidth);
+            setActiveImageIndex(index);
+        }
+    };
+
+    const scrollToImage = (index: number) => {
+        if (scrollContainerRef.current) {
+            const width = scrollContainerRef.current.clientWidth;
+            scrollContainerRef.current.scrollTo({ left: width * index, behavior: 'smooth' });
+        }
+    };
 
     // Close selector on scroll
     useEffect(() => {
@@ -96,19 +113,51 @@ export default function ProductCard({ product, index }: Props) {
                 <span className="absolute top-6 left-6 bg-white px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-[#1A2621] shadow-sm z-20">
                     {finalBadgeLabel}
                 </span>
-                <div className="w-full h-full flex items-center justify-center p-8">
-                    {product.images[0] ? (
-                        <img
-                            src={product.images[0].src}
-                            alt={product.title}
-                            className="w-full h-full object-contain drop-shadow-2xl relative z-10 transition-transform duration-500 group-hover:scale-110"
-                        />
+                <div
+                    ref={scrollContainerRef}
+                    onScroll={handleImageScroll}
+                    className="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth"
+                >
+                    {product.images && product.images.length > 0 ? (
+                        product.images.map((image: any, i: number) => (
+                            <div key={i} className="w-full h-full flex-shrink-0 flex items-center justify-center p-8 snap-center">
+                                <img
+                                    src={image.src}
+                                    alt={`${product.title} - Image ${i + 1}`}
+                                    className="w-full h-full object-contain drop-shadow-2xl relative z-10 transition-transform duration-500 group-hover:scale-105"
+                                />
+                            </div>
+                        ))
                     ) : (
-                        <div className="w-full h-full bg-[#2D3A31]/10 rounded flex items-center justify-center">
-                            <span className="text-[#2D3A31] font-serif text-6xl opacity-20">{product.title?.charAt(0) || "N"}</span>
+                        <div className="w-full h-full flex items-center justify-center p-8 snap-center">
+                            <div className="w-full h-full bg-[#2D3A31]/10 rounded flex items-center justify-center">
+                                <span className="text-[#2D3A31] font-serif text-6xl opacity-20">{product.title?.charAt(0) || "N"}</span>
+                            </div>
                         </div>
                     )}
                 </div>
+
+                {/* PAGINATION DOTS */}
+                {product.images && product.images.length > 1 && (
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20 pointer-events-none">
+                        {product.images.map((_: any, i: number) => (
+                            <button
+                                key={i}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    scrollToImage(i);
+                                }}
+                                className={`w-2 h-2 rounded-full transition-all duration-300 pointer-events-auto ${i === activeImageIndex
+                                    ? "bg-[#1A2621] w-4"
+                                    : "bg-[#1A2621]/20 hover:bg-[#1A2621]/40"
+                                    }`}
+                                aria-label={`View image ${i + 1}`}
+                            />
+                        ))}
+                    </div>
+                )}
+
                 <div className="absolute bottom-6 right-6 z-30 flex flex-col items-end gap-2">
                     {/* VARIANT SELECTOR MENU */}
                     {isSelectorOpen && product.variants.length > 1 && (

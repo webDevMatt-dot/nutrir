@@ -6,6 +6,7 @@ import ProductActions from "../../components/ProductActions";
 import ViewItemTracker from "../../components/ViewItemTracker";
 import ProductReviews from "../../components/ProductReviews";
 import ProductDescription from "../../components/ProductDescription";
+import ProductGallery from "../../components/ProductGallery";
 
 type Props = {
     params: Promise<{ id: string }>;
@@ -81,17 +82,11 @@ export default async function ProductDetailPage({ params }: Props) {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
                     {/* LEFT: Image Section */}
-                    <div className={`${bgColor} rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 flex items-center justify-center relative aspect-square lg:aspect-[4/5]`}>
-                        {product.images[0] ? (
-                            <img
-                                src={product.images[0].src}
-                                alt={product.title}
-                                className="w-3/4 h-3/4 object-contain drop-shadow-2xl relative z-10"
-                            />
-                        ) : (
-                            <div className="w-48 h-64 bg-[#2D3A31] rounded-lg shadow-2xl z-10 flex items-center justify-center text-[#D4AF37] text-6xl font-serif">N</div>
-                        )}
-                    </div>
+                    <ProductGallery
+                        images={product.images}
+                        title={product.title}
+                        bgColor={bgColor}
+                    />
 
                     {/* RIGHT: Details Section */}
                     <div className="pt-4">
