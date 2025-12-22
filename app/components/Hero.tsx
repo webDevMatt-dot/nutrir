@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-export default function Hero() {
+interface Props {
+    product?: any;
+}
+
+export default function Hero({ product }: Props) {
     return (
         <div className="relative bg-white min-h-[600px] flex items-center overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -30,10 +34,10 @@ export default function Hero() {
 
                         {/* Button */}
                         <Link
-                            href="/collections/all-products"
+                            href={product ? `/product/${product.handle}` : "/collections/all-products"}
                             className="group inline-flex items-center gap-2 bg-[#2D3A31] text-white px-8 py-4 rounded-full font-medium transition hover:bg-black"
                         >
-                            Shop All Formulas
+                            {product ? `Shop ${product.title}` : "Shop All Formulas"}
                             {/* Arrow Icon */}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -58,9 +62,9 @@ export default function Hero() {
                         <div className="relative z-10 w-full max-w-sm transform translate-x-6">
                             {/* NOTE: Replace this src with your actual transparent product image later */}
                             <img
-                                src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                                alt="Premium Product"
-                                className="w-full h-auto drop-shadow-xl"
+                                src={product?.images[0]?.src || "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
+                                alt={product?.title || "Premium Product"}
+                                className="w-full h-auto drop-shadow-xl object-contain aspect-square"
                             />
 
                             {/* Floating "Quality" Card */}

@@ -50,7 +50,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-white">
-      <Hero />
+      <Hero product={products[0]} />
       <Marquee />
       <Philosophy />
 
