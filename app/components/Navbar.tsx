@@ -38,7 +38,7 @@ export default function Navbar() {
                                 href="/"
                                 className="text-2xl md:text-3xl font-serif tracking-[0.2em] font-medium hover:opacity-80 transition bg-gradient-to-r from-[#1A2621] via-[#4A5D23] to-[#998B5E] bg-clip-text text-transparent"
                             >
-                                N U T R I R
+                                N U T R I
                             </Link>
                         </div>
 
