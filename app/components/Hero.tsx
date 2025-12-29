@@ -34,10 +34,10 @@ export default function Hero({ product }: Props) {
 
                         {/* Button */}
                         <Link
-                            href={product ? `/product/${product.handle}` : "/collections/all-products"}
+                            href="/collections/all-products"
                             className="group inline-flex items-center gap-2 bg-[#2D3A31] text-white px-8 py-4 rounded-full font-medium transition hover:bg-black"
                         >
-                            {product ? `Shop ${product.title}` : "Shop All Formulas"}
+                            View Formulas
                             {/* Arrow Icon */}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -62,8 +62,8 @@ export default function Hero({ product }: Props) {
                         <div className="relative z-10 w-full max-w-sm transform translate-x-6">
                             {/* NOTE: Replace this src with your actual transparent product image later */}
                             <img
-                                src={product?.images[0]?.src || "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
-                                alt={product?.title || "Premium Product"}
+                                src="/nutrir_white.jpg"
+                                alt="Nutrir Wellness"
                                 className="w-full h-auto drop-shadow-xl object-contain aspect-square"
                             />
 
