@@ -109,7 +109,7 @@ export default function ContactPage() {
                         {/* Image / Decorative */}
                         <div className="aspect-[4/3] rounded-2xl bg-[#E8F4F1] relative overflow-hidden hidden lg:block">
                             <div className="absolute inset-0 flex items-center justify-center text-[#2D3A31]/20">
-                                <span className="font-serif text-8xl italic">Nutrir</span>
+                                <img src="/nutrir_logo.png" alt="Nutrir" className="w-2/3 h-auto object-contain opacity-30" />
                             </div>
                         </div>
                     </div>

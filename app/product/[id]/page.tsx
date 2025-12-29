@@ -46,6 +46,16 @@ export default async function ProductDetailPage({ params }: Props) {
     // 1. Unescape headers
     processedHtml = processedHtml.replace(/&lt;(h[3-6])&gt;/gi, '<$1>').replace(/&lt;\/(h[3-6])&gt;/gi, '</$1>');
 
+    // 1.5 Unwrap headers (Remove wrapping p, b, strong, etc. that breaks the split logic)
+    // Matches: <p><h3>...</h3></p> or <b><h3>...</h3></b>
+    // We remove the tags BEFORE the header and AFTER the header to ensure clean splitting
+
+    // Remove opening tags matching p, b, strong, em, i, u, span, div immediately before a header
+    processedHtml = processedHtml.replace(/(?:<\/?(?:p|b|strong|em|i|u|span|div)[^>]*>\s*)+(<h[3-6])/gi, '$1');
+
+    // Remove closing/opening tags immediately after a header
+    processedHtml = processedHtml.replace(/(<\/h[3-6]>)(?:\s*<\/?(?:p|b|strong|em|i|u|span|div)[^>]*>)+/gi, '$1');
+
     // 2. Strip scripts/styles (Basic sanitization)
     processedHtml = processedHtml.replace(/<!--[\s\S]*?-->/g, '');
     processedHtml = processedHtml.replace(/<\/?(script|style|iframe|object|embed)[^>]*>/gi, '');
