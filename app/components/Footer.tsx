@@ -4,32 +4,6 @@ export default function Footer() {
     return (
         <footer className="bg-white pt-20">
 
-            {/* 1. TRUST STATS SECTION (The white area with numbers) */}
-            <div className="max-w-6xl mx-auto px-4 mb-20">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-
-                    <div>
-                        <h3 className="text-3xl font-light text-gray-900 mb-2">100%</h3>
-                        <p className="text-sm text-gray-500 uppercase tracking-wide">Natural Ingredients</p>
-                    </div>
-
-                    <div>
-                        <h3 className="text-3xl font-light text-gray-900 mb-2">11+</h3>
-                        <p className="text-sm text-gray-500 uppercase tracking-wide">Therapeutic Formulas</p>
-                    </div>
-
-                    <div>
-                        <h3 className="text-3xl font-light text-gray-900 mb-2">24-48h</h3>
-                        <p className="text-sm text-gray-500 uppercase tracking-wide">Fast Shipping</p>
-                    </div>
-
-                    <div>
-                        <h3 className="text-3xl font-light text-gray-900 mb-2">14 Day</h3>
-                        <p className="text-sm text-gray-500 uppercase tracking-wide">Return Policy</p>
-                    </div>
-
-                </div>
-            </div>
 
             {/* 2. MAIN DARK FOOTER */}
             <div className="bg-[#1A2621] text-white py-16 px-4">

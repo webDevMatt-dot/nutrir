@@ -46,6 +46,7 @@ export const metadata: Metadata = {
 };
 
 import AnnouncementBar from "./components/AnnouncementBar";
+import TrustBanner from "./components/TrustBanner";
 
 import { AuthProvider } from "./context/AuthContext";
 
@@ -65,6 +66,7 @@ export default function RootLayout({
             <Navbar />
             <CartDrawer />
             {children}
+            <TrustBanner />
             <Footer />
           </CartProvider>
         </AuthProvider>
