@@ -9,7 +9,7 @@ interface Props {
 
 export default function Hero({ product }: Props) {
     return (
-        <div className="relative bg-white min-h-[auto] lg:min-h-[600px] py-20 lg:py-0 flex items-center overflow-hidden">
+        <div className="relative bg-white min-h-[500px] lg:min-h-[600px] py-10 lg:py-0 flex items-center overflow-hidden">
             {/* Background Bubbles (Behind Glass) */}
             <motion.div
                 className="absolute top-10 left-[10%] w-64 h-64 bg-[#D4AF37] rounded-full opacity-80"
@@ -18,7 +18,7 @@ export default function Hero({ product }: Props) {
                     x: [0, 20, -20, 0],
                     scale: [1, 1.1, 0.9, 1],
                 }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
             />
             <motion.div
                 className="absolute bottom-10 right-[20%] w-96 h-96 bg-[#c9a227] rounded-full opacity-70"
@@ -27,7 +27,7 @@ export default function Hero({ product }: Props) {
                     x: [0, -30, 30, 0],
                     scale: [1, 1.2, 1],
                 }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             />
             <motion.div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-400 rounded-full opacity-50"
