@@ -59,6 +59,19 @@ export default function Footer() {
                                 </svg>
                             </a>
 
+                            {/* LinkedIn */}
+                            <a
+                                href="https://www.linkedin.com/company/nutrir-foods-and-wellness"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-10 h-10 rounded-full bg-[#2A3831] flex items-center justify-center hover:bg-[#D4AF37] hover:text-black transition cursor-pointer text-white"
+                                aria-label="LinkedIn"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                </svg>
+                            </a>
+
                             {/* Email */}
                             <a
                                 href="mailto:admin@nutrirfoods.com"
@@ -90,7 +103,7 @@ export default function Footer() {
                         <h3 className="text-[#D4AF37] text-sm font-bold uppercase tracking-widest mb-6">Quick Links</h3>
                         <ul className="space-y-4 text-gray-400">
                             <li><Link href="/collections/all-products" className="hover:text-white transition">Shop All</Link></li>
-                            <li><Link href="/our-story" className="hover:text-white transition">Our Story</Link></li>
+                            {/* <li><Link href="/our-story" className="hover:text-white transition">Our Story</Link></li> */}
                             <li><Link href="/policies" className="hover:text-white transition">Policies</Link></li>
                             <li><Link href="/faq" className="hover:text-white transition">FAQ</Link></li>
                             <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>

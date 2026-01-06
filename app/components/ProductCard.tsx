@@ -281,6 +281,10 @@ export default function ProductCard({ product, index }: Props) {
                     {product.variants.length > 1 && <span className="text-sm font-normal text-gray-500 mr-1">Starting at</span>}
                     {formattedPrice}
                 </div>
+                {/* DISCOUNT INFO */}
+                <div className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-wide mt-1">
+                    5% OFF | Code: NEW100
+                </div>
             </div>
         </Link>
     );

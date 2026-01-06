@@ -53,6 +53,16 @@ export default function ProductActions({ variants }: Props) {
                 }).format(parseFloat(selectedVariant?.price?.amount || "0"))}
             </div>
 
+            {/* DISCOUNT BADGE */}
+            <div className="mb-8 inline-flex items-center gap-2 bg-yellow-50 px-4 py-2 rounded-lg border border-[#D4AF37]/30">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-[#D4AF37]">
+                    <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.572 2.978v2.268a.75.75 0 00.325.634l2.678 1.921c1.41.97.276 3.003-1.42 2.924l-3.236-.151a.75.75 0 00-.671.498l-1.096 3.123c-.563 1.6-2.73 1.545-3.22-.082l-.966-3.18a.75.75 0 00-.7-.525l-3.323.09c-1.684.045-2.775-1.996-1.348-2.923l2.766-1.795a.75.75 0 00.322-.634V5.555c.002-1.519 1.074-2.804 2.572-2.978z" clipRule="evenodd" />
+                </svg>
+                <span className="text-sm font-bold text-[#1A2621]">
+                    New Customer Deal: 5% OFF with code <span className="text-black underline">NEW100</span>
+                </span>
+            </div>
+
             {/* VARIANT SELECTOR */}
             {variants.length > 1 && (
                 <div className="mb-8">
