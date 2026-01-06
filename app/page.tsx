@@ -46,6 +46,17 @@ export default async function Home() {
     }
   });
 
+  // Fill up to 8 products if needed
+  if (selectedProducts.length < 8) {
+    const remainingNeeded = 8 - selectedProducts.length;
+    const remainingProducts = allProducts.filter((p: any) => !utilizedProductIds.has(p.id));
+
+    for (let i = 0; i < remainingNeeded && i < remainingProducts.length; i++) {
+      selectedProducts.push(remainingProducts[i]);
+      utilizedProductIds.add(remainingProducts[i].id);
+    }
+  }
+
   const products = selectedProducts;
 
   return (
