@@ -58,7 +58,7 @@ const policyData = [
                     </table>
                 </div>
 
-                <p><strong>Couriers:</strong> DHL & Local Partners</p>
+                <p><strong>Couriers:</strong> Fedex & Local Partners</p>
             </>
         )
     },

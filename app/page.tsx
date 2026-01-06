@@ -6,6 +6,7 @@ import { getAllProducts } from "./lib/shopify"; // <-- NEW ROBUST FETCH
 import Hero from "./components/Hero";
 import Philosophy from "./components/Philosophy";
 import FeaturedCollection from "./components/FeaturedCollection";
+import TrustBanner from "./components/TrustBanner";
 
 // Fetch products from Shopify
 async function getProducts() {
@@ -67,6 +68,8 @@ export default async function Home() {
 
       {/* Pass the products we fetched to the new component */}
       <FeaturedCollection products={products} />
+
+      <TrustBanner />
     </main>
   );
 }

@@ -21,6 +21,11 @@ const config = { // <-- Removed "type: Config" here
         extend: {
             animation: {
                 marquee: 'marquee 25s linear infinite',
+                'marquee-slow': 'marquee 40s linear infinite',
+                float: 'float 3s ease-in-out infinite',
+                'pulse-slow': 'pulse-slow 4s ease-in-out infinite',
+                'bounce-slow': 'bounce-slow 3s infinite',
+                'spin-slow': 'spin 12s linear infinite',
             },
             keyframes: {
                 marquee: {

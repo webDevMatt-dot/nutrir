@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface Props {
     product?: any;
@@ -7,7 +10,34 @@ interface Props {
 export default function Hero({ product }: Props) {
     return (
         <div className="relative bg-white min-h-[600px] flex items-center overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            {/* Background Bubbles (Behind Glass) */}
+            <motion.div
+                className="absolute top-10 left-[10%] w-64 h-64 bg-[#D4AF37]/20 rounded-full blur-[80px]"
+                animate={{
+                    y: [0, 30, 0],
+                    scale: [1, 1.1, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+                className="absolute bottom-10 right-[20%] w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-[100px]"
+                animate={{
+                    y: [0, -50, 0],
+                    scale: [1, 1.2, 1],
+                }}
+                transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-yellow-100/10 rounded-full blur-3xl"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            />
+
+            {/* Frosted Glass Layer */}
+            <div className="absolute inset-0 backdrop-blur-[20px] bg-white/40 z-0"></div>
+
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
                     {/* LEFT SIDE: Content */}
@@ -35,20 +65,31 @@ export default function Hero({ product }: Props) {
                         {/* Button */}
                         <Link
                             href="/collections/all-products"
-                            className="group inline-flex items-center gap-2 bg-[#2D3A31] text-white px-8 py-4 rounded-full font-medium transition hover:bg-black"
+                            className="group inline-flex items-center gap-2 bg-[#2D3A31] text-white px-8 py-4 rounded-full font-medium transition hover:bg-black overflow-hidden relative"
                         >
-                            View Formulas
-                            {/* Arrow Icon */}
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={2}
-                                stroke="currentColor"
-                                className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                            <span className="relative z-10">View Formulas</span>
+
+                            {/* Arrow Icon with Jerk Animation */}
+                            <motion.span
+                                className="relative z-10"
+                                animate={{ x: [0, 4, 0, 0, 0, 0] }} // Jerk motion
+                                transition={{
+                                    duration: 1.5,
+                                    repeat: Infinity,
+                                    times: [0, 0.2, 0.4, 0.6, 1] // Quick movement then pause
+                                }}
                             >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                            </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={2}
+                                    stroke="currentColor"
+                                    className="w-4 h-4"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </motion.span>
                         </Link>
                     </div>
 
@@ -56,12 +97,34 @@ export default function Hero({ product }: Props) {
                     <div className="relative flex justify-center lg:justify-end">
 
                         {/* The Organic Circle Background */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#F2F2EF] rounded-full z-0 flex items-center justify-center">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] z-0 flex items-center justify-center">
+
+                            {/* Inner Background Circle */}
+                            <div className="absolute inset-2 bg-[#F2F2EF] rounded-full z-0"></div>
+
+                            {/* Golden Spinner Ring - Faster */}
+                            <motion.div
+                                className="absolute inset-0 rounded-full border border-transparent border-t-[#D4AF37]/60 border-r-[#D4AF37]/60 z-10"
+                                style={{
+                                    maskImage: 'linear-gradient(to bottom, black, transparent)',
+                                    WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)'
+                                }}
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                            />
+
+                            {/* Second Offset Ring for depth */}
+                            <motion.div
+                                className="absolute inset-0 rounded-full border border-transparent border-b-[#D4AF37]/40 border-l-[#D4AF37]/40 z-10"
+                                animate={{ rotate: -360 }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                            />
+
                             {/* Use transparent logo inside circle */}
                             <img
                                 src="/nutrir_trans.png"
                                 alt="Nutrir Wellness Logo"
-                                className="w-5/6 h-auto object-contain opacity-90"
+                                className="w-5/6 h-auto object-contain opacity-90 relative z-20"
                             />
                         </div>
 
