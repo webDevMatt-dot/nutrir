@@ -9,7 +9,7 @@ interface Props {
 
 export default function Hero({ product }: Props) {
     return (
-        <div className="relative bg-white min-h-[600px] flex items-center overflow-hidden">
+        <div className="relative bg-white min-h-[auto] lg:min-h-[600px] py-20 lg:py-0 flex items-center overflow-hidden">
             {/* Background Bubbles (Behind Glass) */}
             <motion.div
                 className="absolute top-10 left-[10%] w-64 h-64 bg-[#D4AF37] rounded-full opacity-80"
@@ -55,7 +55,7 @@ export default function Hero({ product }: Props) {
                         </div>
 
                         {/* Heading */}
-                        <h1 className="text-5xl md:text-7xl font-light text-gray-900 leading-[1.1] mb-6 font-serif">
+                        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-light text-gray-900 leading-[1.1] mb-6 font-serif">
                             Transforming <br />
                             <span className="font-normal">Science</span> <br />
                             into <span className="text-yellow-600 font-medium">Natural Health</span>
@@ -101,7 +101,7 @@ export default function Hero({ product }: Props) {
                     <div className="relative flex justify-center lg:justify-end">
 
                         {/* The Organic Circle Background */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] z-0 flex items-center justify-center">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px] z-0 flex items-center justify-center">
 
                             {/* Inner Background Circle */}
                             <div className="absolute inset-2 bg-[#F2F2EF] rounded-full z-0"></div>
@@ -142,8 +142,8 @@ export default function Hero({ product }: Props) {
                             {/* Placeholder to keep layout if needed, but we are moving focus to circle content */}
                         </div>
 
-                        {/* Floating "Quality" Card */}
-                        <div className="absolute bottom-10 -left-10 bg-white p-4 rounded-xl shadow-lg flex items-center gap-4 max-w-[200px] animate-in slide-in-from-bottom duration-1000">
+                        {/* Floating "Quality" Card - Centered on mobile, offset on desktop */}
+                        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 lg:bottom-10 lg:-left-10 lg:translate-x-0 bg-white p-4 rounded-xl shadow-lg flex items-center gap-4 w-max max-w-[200px] animate-in slide-in-from-bottom duration-1000 z-30">
                             <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                                     <path fillRule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813a3.75 3.75 0 002.576-2.576l.813-2.846A.75.75 0 019 4.5zM6 20.25a.75.75 0 01.75.75v.75c0 .414-.336.75-.75.75H5.25a.75.75 0 01-.75-.75v-.75a.75.75 0 01.75-.75h.75z" clipRule="evenodd" />
