@@ -45,19 +45,19 @@ export default function ProductCard({ product, index }: Props) {
 
     // --- BRANDED COLOR MAP (User's Final Design) ---
     const colorMap: { [key: string]: string } = {
-        // 1. pink / purple
-        "female wellness": "bg-[#F2EFF9]",
-        // 2. BLUE (New, distinct color for Male Wellness)
-        "male wellness": "bg-[#DDEBFF]", // Light Pastel Blue
-        // 3. purple
-        "specific conditions": "bg-[#F2EFF9]",
-        // 4. brown/peach
-        "gut health": "bg-[#FEF2EA]",
-        // 5. joint & bone (Retains original light green)
-        "joint & bone": "bg-[#E8F4F1]",
-        // 6. skin & beauty
-        "skin & beauty": "bg-[#F9F9F7]",
-        "default": "bg-gray-100",
+        // 1. pink / purple (Darker: #E5DFF5)
+        "female wellness": "bg-[#E5DFF5]",
+        // 2. BLUE (Darker: #C5DFFF)
+        "male wellness": "bg-[#C5DFFF]",
+        // 3. purple (Same as female wellness)
+        "specific conditions": "bg-[#E5DFF5]",
+        // 4. brown/peach (Darker: #FCDBC9)
+        "gut health": "bg-[#FCDBC9]",
+        // 5. joint & bone (Darker: #D1ECE6)
+        "joint & bone": "bg-[#D1ECE6]",
+        // 6. skin & beauty (Darker Cream: #F0F0EB)
+        "skin & beauty": "bg-[#F0F0EB]",
+        "default": "bg-gray-200", // Slightly darker default too
     };
 
     const priorityTags = [
@@ -119,7 +119,7 @@ export default function ProductCard({ product, index }: Props) {
             <div className="relative aspect-square mb-6 transition-transform duration-500">
 
                 {/* 1. THE BLEED (Colored Blob behind) - STARTS INSIDE, BLEEDS OUT ON HOVER */}
-                <div className={`absolute inset-0 ${bgColor} rounded-[2.5rem] blur-xl opacity-50 group-hover:-inset-8 group-hover:blur-3xl group-hover:opacity-100 transition-all duration-500 ease-out`}></div>
+                <div className={`absolute inset-0 ${bgColor} rounded-[2.5rem] blur-xl opacity-50 group-hover:-inset-8 group-hover:blur-3xl group-hover:opacity-100 group-hover:animate-pulse transition-all duration-500 ease-out`}></div>
 
                 {/* 2. THE GLASS CARD (Content holder) - Ultra clear for max color visibility */}
                 <div className="relative z-10 w-full h-full bg-white/10 backdrop-blur-md border border-white/20 rounded-[2rem] overflow-hidden shadow-sm">
