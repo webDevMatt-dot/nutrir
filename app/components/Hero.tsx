@@ -12,30 +12,34 @@ export default function Hero({ product }: Props) {
         <div className="relative bg-white min-h-[600px] flex items-center overflow-hidden">
             {/* Background Bubbles (Behind Glass) */}
             <motion.div
-                className="absolute top-10 left-[10%] w-64 h-64 bg-[#D4AF37]/20 rounded-full blur-[80px]"
+                className="absolute top-10 left-[10%] w-64 h-64 bg-[#D4AF37] rounded-full opacity-80"
                 animate={{
-                    y: [0, 30, 0],
-                    scale: [1, 1.1, 1],
-                    opacity: [0.3, 0.6, 0.3],
+                    y: [0, 40, 0],
+                    x: [0, 20, -20, 0],
+                    scale: [1, 1.1, 0.9, 1],
                 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
             />
             <motion.div
-                className="absolute bottom-10 right-[20%] w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-[100px]"
+                className="absolute bottom-10 right-[20%] w-96 h-96 bg-[#c9a227] rounded-full opacity-70"
                 animate={{
-                    y: [0, -50, 0],
+                    y: [0, -60, 0],
+                    x: [0, -30, 30, 0],
                     scale: [1, 1.2, 1],
                 }}
-                transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
             />
             <motion.div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-yellow-100/10 rounded-full blur-3xl"
-                animate={{ rotate: 360 }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-400 rounded-full opacity-50"
+                animate={{
+                    rotate: 360,
+                    scale: [1, 1.1, 1],
+                }}
                 transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
             />
 
             {/* Frosted Glass Layer */}
-            <div className="absolute inset-0 backdrop-blur-[20px] bg-white/40 z-0"></div>
+            <div className="absolute inset-0 backdrop-blur-[50px] bg-white/30 z-0"></div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
