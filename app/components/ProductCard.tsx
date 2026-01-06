@@ -57,7 +57,7 @@ export default function ProductCard({ product, index }: Props) {
         "joint & bone": "bg-[#E8F4F1]",
         // 6. skin & beauty
         "skin & beauty": "bg-[#F9F9F7]",
-        "default": "bg-gray-50",
+        "default": "bg-gray-100",
     };
 
     const priorityTags = [
@@ -69,8 +69,8 @@ export default function ProductCard({ product, index }: Props) {
         "Specific Conditions"
     ];
 
-    // Helper to normalize tags for strict lookup
-    const normalizeTag = (tag: string) => tag.toLowerCase().replace(/ and /g, ' & ').trim();
+    // Helper to normalize tags for strict lookup - NOW MORE PERMISSIVE
+    const normalizeTag = (tag: string) => tag.toLowerCase().replace(/ and /g, ' & ').replace(/ wellness/g, '').trim();
 
     // Find the highest priority tag that matches a color
     const primaryTag = product.tags?.find((t: any) => {
@@ -82,8 +82,15 @@ export default function ProductCard({ product, index }: Props) {
     });
 
     // Determine the final background color class
+    // Determine the final background color class
+    // IMPROVED LOGIC: partial matches allowed
     const bgColorKey = primaryTag ? normalizeTag(primaryTag) : "default";
-    const bgColor = colorMap[bgColorKey] || colorMap["default"];
+    // Try exact match, then partial match (e.g. "gut" matches "gut health")
+    const resolvedColorKey = Object.keys(colorMap).find(k => bgColorKey.includes(k) || k.includes(bgColorKey)) || "default";
+    const bgColor = colorMap[resolvedColorKey] || colorMap["default"];
+
+    // DEBUGGING LOG
+    console.log(`[DEBUG ProductCard] ${product.title} | Tags:`, product.tags, `| Primary: ${primaryTag} | Key: ${bgColorKey} | Class: ${bgColor}`);
 
     // Determine the badge label
     const finalBadgeLabel = primaryTag
@@ -106,58 +113,68 @@ export default function ProductCard({ product, index }: Props) {
     return (
         <Link
             href={`/product/${product.handle}`}
-            className="group block"
+            className="group block relative transition-all duration-500 hover:scale-[1.02]"
         >
-            {/* CARD IMAGE & COLOR */}
-            <div className={`${bgColor} rounded-[2rem] relative aspect-square mb-6 overflow-hidden transition-transform duration-500`}>
-                <span className="absolute top-6 left-6 bg-white px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-[#1A2621] shadow-sm z-20">
-                    {finalBadgeLabel}
-                </span>
-                <div
-                    ref={scrollContainerRef}
-                    onScroll={handleImageScroll}
-                    className="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth"
-                >
-                    {product.images && product.images.length > 0 ? (
-                        product.images.map((image: any, i: number) => (
-                            <div key={i} className="w-full h-full flex-shrink-0 flex items-center justify-center p-8 snap-center">
-                                <img
-                                    src={image.src}
-                                    alt={`${product.title} - Image ${i + 1}`}
-                                    className="w-full h-full object-contain drop-shadow-2xl relative z-10 transition-transform duration-500 group-hover:scale-105"
+            {/* CARD CONTAINER - No Overflow Hidden so bleed shows */}
+            <div className="relative aspect-square mb-6 transition-transform duration-500">
+
+                {/* 1. THE BLEED (Colored Blob behind) - STARTS INSIDE, BLEEDS OUT ON HOVER */}
+                <div className={`absolute inset-0 ${bgColor} rounded-[2.5rem] blur-xl opacity-50 group-hover:-inset-8 group-hover:blur-3xl group-hover:opacity-100 transition-all duration-500 ease-out`}></div>
+
+                {/* 2. THE GLASS CARD (Content holder) - Ultra clear for max color visibility */}
+                <div className="relative z-10 w-full h-full bg-white/10 backdrop-blur-md border border-white/20 rounded-[2rem] overflow-hidden shadow-sm">
+
+                    <span className="absolute top-6 left-6 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-[#1A2621] shadow-sm z-20">
+                        {finalBadgeLabel}
+                    </span>
+
+                    <div
+                        ref={scrollContainerRef}
+                        onScroll={handleImageScroll}
+                        className="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth"
+                    >
+                        {product.images && product.images.length > 0 ? (
+                            product.images.map((image: any, i: number) => (
+                                <div key={i} className="w-full h-full flex-shrink-0 flex items-center justify-center p-8 snap-center">
+                                    <img
+                                        src={image.src}
+                                        alt={`${product.title} - Image ${i + 1}`}
+                                        className="w-full h-full object-contain drop-shadow-xl relative z-10 transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                </div>
+                            ))
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center p-8 snap-center">
+                                <div className="w-full h-full bg-[#2D3A31]/5 rounded flex items-center justify-center">
+                                    <span className="text-[#2D3A31] font-serif text-6xl opacity-20">{product.title?.charAt(0) || "N"}</span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* PAGINATION DOTS (Moved inside glass) */}
+                    {product.images && product.images.length > 1 && (
+                        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20 pointer-events-none">
+                            {product.images.map((_: any, i: number) => (
+                                <button
+                                    key={i}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        scrollToImage(i);
+                                    }}
+                                    className={`w-2 h-2 rounded-full transition-all duration-300 pointer-events-auto ${i === activeImageIndex
+                                        ? "bg-[#1A2621] w-4"
+                                        : "bg-[#1A2621]/20 hover:bg-[#1A2621]/40"
+                                        }`}
+                                    aria-label={`View image ${i + 1}`}
                                 />
-                            </div>
-                        ))
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center p-8 snap-center">
-                            <div className="w-full h-full bg-[#2D3A31]/10 rounded flex items-center justify-center">
-                                <span className="text-[#2D3A31] font-serif text-6xl opacity-20">{product.title?.charAt(0) || "N"}</span>
-                            </div>
+                            ))}
                         </div>
                     )}
                 </div>
 
-                {/* PAGINATION DOTS */}
-                {product.images && product.images.length > 1 && (
-                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20 pointer-events-none">
-                        {product.images.map((_: any, i: number) => (
-                            <button
-                                key={i}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    scrollToImage(i);
-                                }}
-                                className={`w-2 h-2 rounded-full transition-all duration-300 pointer-events-auto ${i === activeImageIndex
-                                    ? "bg-[#1A2621] w-4"
-                                    : "bg-[#1A2621]/20 hover:bg-[#1A2621]/40"
-                                    }`}
-                                aria-label={`View image ${i + 1}`}
-                            />
-                        ))}
-                    </div>
-                )}
-
+                {/* ACTION BUTTONS (Outside Glass or floating above) */}
                 <div className="absolute bottom-6 right-6 z-30 flex flex-col items-end gap-2">
                     {/* VARIANT SELECTOR MENU */}
                     {isSelectorOpen && product.variants.length > 1 && (
