@@ -1,7 +1,8 @@
 // app/product/[id]/page.tsx - FINAL VERSION
 
 import Link from "next/link";
-import { getProduct } from "../../lib/shopify";
+import { getProduct, getAllProducts } from "../../lib/shopify";
+import ProductCard from "../../components/ProductCard";
 import ProductActions from "../../components/ProductActions";
 import ViewItemTracker from "../../components/ViewItemTracker";
 import ProductReviews from "../../components/ProductReviews";
@@ -20,6 +21,7 @@ async function fetchProductData(handle: string) {
 export default async function ProductDetailPage({ params }: Props) {
     const { id: handle } = await params;
     const product = await fetchProductData(handle);
+    const { products: allProducts } = await getAllProducts(); // Fetch all products for recommendations
 
     if (!product) {
         return (
@@ -209,9 +211,53 @@ export default async function ProductDetailPage({ params }: Props) {
                 </div>
             </div>
 
-            {/* --- REVIEWS SECTION --- */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <ProductReviews productHandle={product.handle} />
+            {/* --- RELATED PRODUCTS SECTION --- */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 border-t border-gray-100 mt-20">
+                <h2 className="text-3xl font-serif text-[#1A2621] mb-12 text-center">You Might Also Like</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {(() => {
+                        // 1. HELPER: Normalize tags for comparison
+                        const normalize = (s: string) => s.toLowerCase().replace(/ and /g, ' & ').replace(/ wellness/g, '').trim();
+
+                        // 2. IDENTIFY CURRENT CATEGORY
+                        const priorityTags = ["Gut Health", "Joint & Bone", "Male Wellness", "Female Wellness", "Skin & Beauty", "Specific Conditions"];
+                        const currentTags = product.tags?.map((t: any) => typeof t === 'string' ? t : t.value) || [];
+
+                        // Find the most specific tag for this product
+                        const primaryTag = currentTags.find((t: string) => {
+                            const n = normalize(t);
+                            return priorityTags.some(pt => normalize(pt) === n);
+                        });
+
+                        // 3. FILTER RECOMMENDATIONS
+                        let recommendations = allProducts.filter((p: any) => p.id !== product.id);
+
+                        // If we found a primary category, prioritize those products
+                        if (primaryTag) {
+                            const nPrimary = normalize(primaryTag);
+                            const similar = recommendations.filter((p: any) => {
+                                const pTags = p.tags?.map((t: any) => typeof t === 'string' ? normalize(t) : normalize(t.value)) || [];
+                                return pTags.includes(nPrimary);
+                            });
+
+                            // If we have distinct similar products, use them. Otherwise fall back to general pool.
+                            if (similar.length > 0) {
+                                recommendations = similar;
+                            }
+                        }
+
+                        // 4. RANDOMIZE (Fisher-Yates Shuffle)
+                        for (let i = recommendations.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [recommendations[i], recommendations[j]] = [recommendations[j], recommendations[i]];
+                        }
+
+                        // 5. RENDER TOP 4
+                        return recommendations.slice(0, 4).map((relatedProduct: any, index: number) => (
+                            <ProductCard key={relatedProduct.id} product={relatedProduct} index={index} />
+                        ));
+                    })()}
+                </div>
             </div>
             {/* ----------------------- */}
         </div>
