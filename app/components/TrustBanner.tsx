@@ -17,7 +17,7 @@ export default function TrustBanner() {
                 <div className="grid grid-cols-4 gap-2 md:gap-8 items-start justify-center">
                     {[
                         { value: '100%', label: 'Natural Ingredients', icon: '🌿' },
-                        { value: '11+', label: 'Therapeutic Formulas', icon: '⚗️' },
+                        { value: 'Multiple', label: 'Specialised Formulas', icon: '⚗️' },
                         { value: '24-48h', label: 'Fast Shipping', icon: '🚀' },
                         { value: '14 Day', label: 'Return Policy', icon: '✓' },
                     ].map((stat, index) => (

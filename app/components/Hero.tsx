@@ -62,9 +62,17 @@ export default function Hero({ product }: Props) {
                         </h1>
 
                         {/* Description */}
-                        <p className="text-lg text-gray-600 mb-8 max-w-md leading-relaxed">
-                            Clean, honest, effective formulations. No outdated formulas, no cutting corners. Quality is non-negotiable.
-                        </p>
+                        <div className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed space-y-4">
+                            <p>
+                                We offer a wide range of natural health products designed to support specific health needs.
+                            </p>
+                            <p>
+                                Each product is created using high-quality ingredients to deliver consistent, meaningful results.
+                            </p>
+                            <p>
+                                Clean, honest formulations, no outdated approaches, no shortcuts. Quality is non-negotiable.
+                            </p>
+                        </div>
 
                         {/* Button */}
                         <Link

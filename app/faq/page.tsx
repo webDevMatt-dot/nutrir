@@ -1,5 +1,5 @@
 // app/faq/page.tsx
-import Accordion from "../components/Accordion";
+
 
 export const dynamic = "force-dynamic";
 
@@ -82,15 +82,16 @@ export default function FAQPage() {
                 </p>
                 {/* ---------------------------------------------------- */}
 
-                {/* FAQ Accordions */}
-                <div className="space-y-4 pt-4 border-t border-gray-100">
+                {/* FAQ List - Static Layout as requested */}
+                <div className="space-y-12 pt-8 border-t border-gray-100">
                     {faqData.map((faq, index) => (
-                        <div key={index} className="bg-white rounded-xl p-0 shadow-lg border border-gray-100">
-                            {/* The Accordion component already applies the branded look from its implementation in product/[id]/page.tsx */}
-                            <Accordion
-                                title={faq.question}
-                                content={faq.answer}
-                                className="px-6"
+                        <div key={index} className="space-y-4">
+                            <h3 className="text-2xl font-serif text-[#1A2621]">
+                                {faq.question}
+                            </h3>
+                            <div
+                                className="text-gray-600 leading-relaxed prose prose-p:my-2 prose-h4:text-lg prose-h4:font-bold prose-h4:text-[#1A2621] prose-h4:mt-4 prose-h4:mb-2"
+                                dangerouslySetInnerHTML={{ __html: faq.answer }}
                             />
                         </div>
                     ))}

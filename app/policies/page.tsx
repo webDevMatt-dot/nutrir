@@ -77,6 +77,7 @@ const policyData = [
                         <li>Product must be in original sealed packaging</li>
                         <li>Return request must be made within 14 days</li>
                         <li>Proof of purchase required</li>
+                        <li>Return shipping costs are the responsibility of the customer</li>
                     </ul>
                 </div>
 
