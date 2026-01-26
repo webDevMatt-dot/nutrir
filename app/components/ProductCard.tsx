@@ -102,10 +102,10 @@ export default function ProductCard({ product, index }: Props) {
     const amount = parseFloat(priceData?.amount || "0");
     const currency = priceData?.currencyCode || "ZAR";
 
-    const formattedPrice = new Intl.NumberFormat('en-US', {
+    const formattedPrice = new Intl.NumberFormat(currency === 'ZAR' ? 'en-ZA' : 'en-US', {
         style: 'currency',
         currency: currency,
-        minimumFractionDigits: 2
+        minimumFractionDigits: 0 // Usually cleaner
     }).format(amount);
 
     const variantId = product.variants[0]?.id;

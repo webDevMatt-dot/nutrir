@@ -24,7 +24,7 @@ export default function CartDrawer() {
 
     // Helper to format currency
     const formatCurrency = (amount: string, code: string) => {
-        return new Intl.NumberFormat('en-US', {
+        return new Intl.NumberFormat(code === 'ZAR' ? 'en-ZA' : 'en-US', {
             style: 'currency',
             currency: code || 'ZAR',
             minimumFractionDigits: 2

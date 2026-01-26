@@ -46,10 +46,10 @@ export default function ProductActions({ variants }: Props) {
 
             {/* DYNAMIC PRICE DISPLAY */}
             <div className="text-3xl font-bold text-[#1A2621] mb-8">
-                {new Intl.NumberFormat('en-US', {
+                {new Intl.NumberFormat(selectedVariant?.price?.currencyCode === 'ZAR' ? 'en-ZA' : 'en-US', {
                     style: 'currency',
                     currency: selectedVariant?.price?.currencyCode || 'USD',
-                    minimumFractionDigits: 2
+                    minimumFractionDigits: 0
                 }).format(parseFloat(selectedVariant?.price?.amount || "0"))}
             </div>
 

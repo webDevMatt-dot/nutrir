@@ -9,6 +9,7 @@ const COUNTRIES = [
     { code: 'EU', label: 'EUR (€)', flag: '🇪🇺' },
     { code: 'CA', label: 'CAD ($)', flag: '🇨🇦' },
     { code: 'AU', label: 'AUD ($)', flag: '🇦🇺' },
+    { code: 'ZA', label: 'ZAR (R)', flag: '🇿🇦' },
 ];
 
 export default function CurrencySelector() {

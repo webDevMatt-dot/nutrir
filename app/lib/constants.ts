@@ -8,6 +8,7 @@ export const COUNTRY_CURRENCY_MAP: Record<string, string> = {
     AU: 'AUD',
     JP: 'JPY',
     NZ: 'NZD',
+    ZA: 'ZAR', // South Africa
 };
 
 export const DEFAULT_CURRENCY = 'USD';
