@@ -1,6 +1,7 @@
 // app/page.tsx - FINAL, STABLE VERSION
 export const dynamic = 'force-dynamic'; // Prevents crash during static build on API errors
 
+import { cookies } from "next/headers";
 import Marquee from "./components/Marquee";
 import { getAllProducts } from "./lib/shopify"; // <-- NEW ROBUST FETCH
 import Hero from "./components/Hero";
@@ -8,14 +9,16 @@ import Philosophy from "./components/Philosophy";
 import FeaturedCollection from "./components/FeaturedCollection";
 
 // Fetch products from Shopify
-async function getProducts() {
+async function getProducts(country: string) {
   // Use the robust utility function from lib/shopify.ts
-  const collection = await getAllProducts();
+  const collection = await getAllProducts(country);
   return collection.products;
 }
 
 export default async function Home() {
-  const allProducts = await getProducts();
+  const cookieStore = await cookies();
+  const country = cookieStore.get('shopify_country')?.value || 'US';
+  const allProducts = await getProducts(country);
 
   // Target categories in specific order
   const targetCategories = [

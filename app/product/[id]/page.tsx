@@ -1,5 +1,6 @@
 // app/product/[id]/page.tsx - FINAL VERSION
 
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { getProduct, getAllProducts } from "../../lib/shopify";
 import ProductCard from "../../components/ProductCard";
@@ -13,15 +14,18 @@ type Props = {
     params: Promise<{ id: string }>;
 };
 
-async function fetchProductData(handle: string) {
-    const product = await getProduct(handle);
+async function fetchProductData(handle: string, country: string) {
+    const product = await getProduct(handle, country);
     return product;
 }
 
 export default async function ProductDetailPage({ params }: Props) {
     const { id: handle } = await params;
-    const product = await fetchProductData(handle);
-    const { products: allProducts } = await getAllProducts(); // Fetch all products for recommendations
+    const cookieStore = await cookies();
+    const country = cookieStore.get('shopify_country')?.value || 'US';
+
+    const product = await fetchProductData(handle, country);
+    const { products: allProducts } = await getAllProducts(country); // Fetch all products for recommendations
 
     if (!product) {
         return (

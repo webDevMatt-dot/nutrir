@@ -17,12 +17,21 @@ interface CartContextType {
     clearCart: () => Promise<void>;
 }
 
+import { useCurrency } from "./CurrencyContext";
+
+// ... existing imports
+
+interface CartContextType {
+    // ...
+}
+
 const CartContext = createContext<CartContextType>({} as CartContextType);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
     const [cart, setCart] = useState<any>(null);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const { customer } = useAuth();
+    const { currencyCode } = useCurrency(); // <-- Use currency from context
 
     useEffect(() => {
         async function initializeCart() {
@@ -30,12 +39,33 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             let currentCart;
 
             if (checkoutId) {
-                const existingCart = await client.checkout.fetch(checkoutId);
-                if (existingCart?.completedAt) {
+                try {
+                    const existingCart = await client.checkout.fetch(checkoutId);
+                    // Check if completed OR if currency mismatch (optional but good)
+                    if (existingCart?.completedAt || existingCart?.currencyCode !== currencyCode) {
+                        // If currency mistmatch, ideally we create a new cart. 
+                        // But verifying 'existingCart.currencyCode' requires checking the object structure.
+                        // client.checkout.fetch returns a GraphModel.
+                        // Let's assume strict currency for now: if user switches currency, they get a fresh cart.
+                        /* 
+                          NOTE: Checking currencyCode on existingCart might be tricky if the SDK doesn't expose it at top level 
+                          without strictly querying it. Usually it does: existingCart.currencyCode.
+                          If it mismatches, we call createNewCart().
+                        */
+                        const cartCurrency = (existingCart as any).currencyCode;
+                        if (cartCurrency && cartCurrency !== currencyCode) {
+                            currentCart = await createNewCart();
+                        } else if (existingCart?.completedAt) {
+                            currentCart = await createNewCart();
+                        } else {
+                            currentCart = existingCart;
+                            setCart(existingCart);
+                        }
+                    } else {
+                        currentCart = await createNewCart();
+                    }
+                } catch (e) {
                     currentCart = await createNewCart();
-                } else {
-                    currentCart = existingCart;
-                    setCart(existingCart);
                 }
             } else {
                 currentCart = await createNewCart();
@@ -61,10 +91,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             }
         }
         initializeCart();
-    }, [customer]);
+    }, [customer, currencyCode]); // Add currencyCode dep to re-init if writes change
 
     async function createNewCart() {
-        const newCart = await client.checkout.create();
+        // Pass presentmentCurrencyCode to create
+        const newCart = await client.checkout.create({
+            presentmentCurrencyCode: currencyCode
+        });
         localStorage.setItem("shopify_checkout_id", newCart.id as string);
         setCart(newCart);
         return newCart;

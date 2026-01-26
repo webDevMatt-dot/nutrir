@@ -7,7 +7,10 @@ import { useAuth } from "../context/AuthContext"; // Import
 import SearchDrawer from "./SearchDrawer";
 import ProfileDrawer from "./ProfileDrawer";      // Import
 
+import CurrencySelector from "./CurrencySelector";
+
 export default function Navbar() {
+    // ...
     const { toggleCart, cart } = useCart();
     const { toggleProfile } = useAuth(); // <--- Get the toggle function
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -59,6 +62,9 @@ export default function Navbar() {
                             <Link href="/contact" className="text-[#1A2621] text-sm font-medium hover:text-[#D4AF37] transition">
                                 Contact
                             </Link>
+                            <div className="pl-4 border-l border-gray-200">
+                                <CurrencySelector />
+                            </div>
                         </div>
 
                         {/* RIGHT: ICONS */}

@@ -244,7 +244,7 @@ export default function ProductCard({ product, index }: Props) {
                             ? "bg-gray-300 cursor-not-allowed opacity-100 translate-y-0"
                             : isSelectorOpen
                                 ? "bg-[#D4AF37] text-black opacity-100 translate-y-0"
-                                : "bg-[#1A2621] text-white opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[#D4AF37] hover:text-black"
+                                : "bg-[#1A2621] text-white opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 hover:bg-[#D4AF37] hover:text-black"
                             }`}
                     >
                         {isSelectorOpen ? (

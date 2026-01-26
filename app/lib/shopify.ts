@@ -12,7 +12,7 @@ export const client = Client.buildClient({
 });
 
 // 2. FETCH FOR PRODUCTS (Server-side)
-async function shopifyFetch(query: string, variables = {}) {
+async function shopifyFetch(query: string, variables = {}, country: string = 'US') {
   const endpoint = `https://${domain}/api/2024-01/graphql.json`;
 
   try {
@@ -22,7 +22,7 @@ async function shopifyFetch(query: string, variables = {}) {
         'Content-Type': 'application/json',
         'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
       },
-      body: JSON.stringify({ query, variables }),
+      body: JSON.stringify({ query, variables: { ...variables, country } }),
       cache: 'no-store', // Force fresh data
     });
 
@@ -84,17 +84,17 @@ const formatProduct = (p: any) => {
 
 // --- EXPORTS ---
 
-export async function getProduct(handle: string) {
-  const query = `query getProduct($handle: String!) { product(handle: $handle) { ${productFragment} } }`;
-  const { data } = await shopifyFetch(query, { handle });
+export async function getProduct(handle: string, country: string = 'US') {
+  const query = `query getProduct($handle: String!, $country: CountryCode) @inContext(country: $country) { product(handle: $handle) { ${productFragment} } }`;
+  const { data } = await shopifyFetch(query, { handle }, country);
   return data?.product ? formatProduct(data.product) : null;
 }
 
-export async function getCollection(handle: string) {
-  if (handle === 'all-products') return getAllProducts();
+export async function getCollection(handle: string, country: string = 'US') {
+  if (handle === 'all-products') return getAllProducts(country);
 
   const query = `
-    query getCollection($handle: String!) {
+    query getCollection($handle: String!, $country: CountryCode) @inContext(country: $country) {
       collection(handle: $handle) {
         title
         description
@@ -106,14 +106,14 @@ export async function getCollection(handle: string) {
       }
     }
   `;
-  const { data } = await shopifyFetch(query, { handle });
+  const { data } = await shopifyFetch(query, { handle }, country);
   if (!data?.collection) return null;
   return { ...data.collection, products: data.collection.products.edges.map(formatProduct) };
 }
 
-export async function getAllProducts() {
+export async function getAllProducts(country: string = 'US') {
   const query = `
-    query getAllProducts {
+    query getAllProducts($country: CountryCode) @inContext(country: $country) {
       products(first: 100) {
         edges {
           node { ${productFragment} }
@@ -121,7 +121,7 @@ export async function getAllProducts() {
       }
     }
   `;
-  const { data } = await shopifyFetch(query);
+  const { data } = await shopifyFetch(query, {}, country);
   return {
     title: "All Products",
     description: "Our complete collection.",
@@ -129,9 +129,9 @@ export async function getAllProducts() {
   };
 }
 
-export async function searchProducts(searchTerm: string) {
+export async function searchProducts(searchTerm: string, country: string = 'US') {
   const query = `
-    query searchProducts($searchTerm: String!) {
+    query searchProducts($searchTerm: String!, $country: CountryCode) @inContext(country: $country) {
       products(first: 10, query: $searchTerm) {
         edges {
           node { ${productFragment} }
@@ -139,7 +139,7 @@ export async function searchProducts(searchTerm: string) {
       }
     }
   `;
-  const { data } = await shopifyFetch(query, { searchTerm });
+  const { data } = await shopifyFetch(query, { searchTerm }, country);
   return data?.products?.edges.map(formatProduct) || [];
 }
 

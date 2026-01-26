@@ -49,6 +49,7 @@ import AnnouncementBar from "./components/AnnouncementBar";
 import TrustBanner from "./components/TrustBanner";
 
 import { AuthProvider } from "./context/AuthContext";
+import { CurrencyProvider } from "./context/CurrencyContext";
 
 export default function RootLayout({
   children,
@@ -62,13 +63,15 @@ export default function RootLayout({
       >
         <AnnouncementBar />
         <AuthProvider>
-          <CartProvider>
-            <Navbar />
-            <CartDrawer />
-            {children}
-            <TrustBanner />
-            <Footer />
-          </CartProvider>
+          <CurrencyProvider>
+            <CartProvider>
+              <Navbar />
+              <CartDrawer />
+              {children}
+              <TrustBanner />
+              <Footer />
+            </CartProvider>
+          </CurrencyProvider>
         </AuthProvider>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_ID as string} />

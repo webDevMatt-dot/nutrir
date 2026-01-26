@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { getCollection } from "../../lib/shopify";
 import ShopGrid from "../../components/ShopGrid";
 import Link from "next/link";
@@ -10,11 +11,13 @@ type Props = {
 
 export default async function CollectionPage({ params }: Props) {
     const { handle } = await params;
+    const cookieStore = await cookies();
+    const country = cookieStore.get('shopify_country')?.value || 'US';
 
     // Fetch 'all-products' to ensure filtering works correctly
     const fetchHandle = handle === 'all-products' ? 'all-products' : handle;
 
-    const collection = await getCollection(fetchHandle);
+    const collection = await getCollection(fetchHandle, country);
 
     if (!collection) {
         return (
